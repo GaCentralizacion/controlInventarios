@@ -124,19 +124,35 @@
                                     <!--Category name-->
                                     <li class="list-header">Navegación</li>
                                     <!--Menu list item-->
-                                    <li ng-show="generadorLayout == true">
+                                    <li ng-show="userData.generadorLayout == true">
                                         <a href="/generaLayout">
-                                            <i class="glyphicon glyphicon-th-list"></i>
+                                            <i class="glyphicon glyphicon-share"></i>
                                             <span class="menu-title">
                                                 <strong>Layouts</strong>
                                             </span>
                                         </a>
                                     </li>
-                                    <li ng-show="cargaInventario == true">
+                                    <li ng-show="userData.cargaLayout == true">
+                                        <a href="/cargaLayout">
+                                            <i class="glyphicon glyphicon-check"></i>
+                                            <span class="menu-title">
+                                                <strong>Carga de Layouts</strong>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li ng-show="userData.cargaInventario == true">
                                         <a href="/cargaInventario">
                                             <i class="glyphicon glyphicon-edit"></i>
                                             <span class="menu-title">
                                                 <strong>Carga de Inventarios</strong>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li ng-show="userData.notificaciones == true">
+                                        <a href="/notificaciones">
+                                            <i class="glyphicon glyphicon-bullhorn"></i>
+                                            <span class="menu-title">
+                                                <strong>Notificaciones</strong>
                                             </span>
                                         </a>
                                     </li>

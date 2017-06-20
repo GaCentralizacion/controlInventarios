@@ -2,14 +2,17 @@
 
     //*******************************Variables*******************************
     $scope.userData = {};
-    $scope.generadorLayout = false;
-    $scope.cargaLayout = false;
-    $scope.cargaInventario = false;
-    $scope.notificaciones = false;
 
     //**************************Init del controller**************************
     $scope.init = function() {
+      $scope.userData = userFactory.getUserData();
+      if ($scope.userData != null || $scope.userData != undefined){
+        $scope.myFirstModule();
+      }else{
+        localStorageService.clearAll();
         $rootScope.mostrarMenu = 0;
+      }
+
     }
 
     // ************************* Función para logueo *************************
@@ -17,42 +20,22 @@
         loginRepository.getUsuario(usuario, contrasenia).then(function(result) {
 
             if (result.data.length > 0) {
-                $scope.userData = userFactory.saveUserData(result.data);
-
-                if ($scope.userData[0].perfiles.length > 0){
-                    $scope.userData[0].perfiles.forEach(function(item){
-                        switch (item.idPerfil) {
-                          case 1:
-                            $scope.generadorLayout = true;
-                            break;
-                          case 2:
-                            $scope.cargaLayout = true;
-                            break;
-                          case 3:
-                            $scope.cargaInventario = true;
-                            break;
-                          case 4:
-                            $scope.notificaciones = true;
-                            break;
-                        }
-                    });
-                }else{
-                    $scope.generadorLayout = true;
-                    $scope.cargaLayout = true;
-                    $scope.cargaInventario = true;
-                    $scope.notificaciones = true;
-                }
-
-                if ($scope.generadorLayout == true){
-                    location.href = '/generaLayout';
-                }else if ($scope.cargaInventario == true) {
-                    location.href = '/cargaInventario';
-                }
+                $scope.userData = userFactory.saveUserData(result.data[0]);
+                $scope.myFirstModule();
             } else {
                 alertFactory.info('Valide el usuario y/o contraseña');
             }
 
         });
+    }
+
+    //*********función para ir al modulo correspondiente según el perfil*********
+    $scope.myFirstModule = function(){
+      if ($scope.userData.generadorLayout == true){
+          location.href = '/generaLayout';
+      }else if ($scope.userData.cargaInventario == true) {
+          location.href = '/cargaInventario';
+      }
     }
 
 });
