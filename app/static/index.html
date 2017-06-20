@@ -62,7 +62,7 @@
                                 <span class="pull-right">
                                     <i class="demo-pli-male ic-user"></i>
                                 </span>
-                                <div class="username hidden-xs"> {{datosUsuario[0].nombre}}</div>
+                                <div class="username hidden-xs"> {{userData.NombreUsuario}}</div>
                             </a>
                             <div class="dropdown-menu dropdown-menu-md dropdown-menu-right panel-default">
                                 <!-- Dropdown footer -->
@@ -115,8 +115,8 @@
                                         <a href="#profile-nav" class="box-block" data-toggle="collapse" aria-expanded="false">
                                             <span class="pull-right dropdown-toggle">
                                             </span>
-                                            <p class="mnp-name"> {{datosUsuario[0].nombre}}</p>
-                                            <span class="mnp-desc">{{datosUsuario[0].correo}}</span>
+                                            <p class="mnp-name"> {{userData.NombreUsuario}}</p>
+                                            <!-- <span class="mnp-desc">{{datosUsuario[0].correo}}</span> -->
                                         </a>
                                     </div>
                                 </div>
@@ -124,7 +124,7 @@
                                     <!--Category name-->
                                     <li class="list-header">Navegación</li>
                                     <!--Menu list item-->
-                                    <li>
+                                    <li ng-show="generadorLayout == true">
                                         <a href="/generaLayout">
                                             <i class="glyphicon glyphicon-th-list"></i>
                                             <span class="menu-title">
@@ -132,7 +132,7 @@
                                             </span>
                                         </a>
                                     </li>
-                                    <li>
+                                    <li ng-show="cargaInventario == true">
                                         <a href="/cargaInventario">
                                             <i class="glyphicon glyphicon-edit"></i>
                                             <span class="menu-title">
@@ -142,10 +142,10 @@
                                     </li>
 
                                 </ul>
-                                <div class="main">
+                                <!-- <div class="main">
                                     <div></div>
-                                    <input type="hidden" id="lgnUser" value="[[ user.idUsuario ]]">
-                                </div>
+                                    <input type="hidden" id="lgnUser" value="{{userData.idUsuario}}">
+                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -199,12 +199,13 @@
     <script src="AngularJS/registrationModule.js"></script>
     <!--librerias de componenetes-->
     <script src="AngularJS/alertFactory.js"></script>
+    <script src="AngularJS/userFactory.js"></script>
     <!--Controllers-->
     <script src="AngularJS/Main/mainControlller.js"></script>
     <script src="AngularJS/login/loginController.js"></script>
     <script src="AngularJS/login/loginRepository.js"></script>
     <script src="AngularJS/Layouts/layoutsController.js"></script>
-    <script src="AngularJS/Layouts/cargaInventarioController.js"></script>
+    <script src="AngularJS/CargaInventarios/cargaInventarioController.js"></script>
 
 </body>
 

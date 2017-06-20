@@ -1,43 +1,44 @@
-registrationModule.controller('mainController', function($scope, $rootScope, $location, localStorageService, alertFactory) {
-
-    $rootScope.userData = localStorageService.get('userData');
-
+registrationModule.controller('mainController', function($scope, $rootScope, $location, localStorageService, alertFactory, userFactory) {
+    $scope.generadorLayout = false;
+    $scope.cargaLayout = false;
+    $scope.cargaInventario = false;
+    $scope.notificaciones = false;
 
     $scope.init = function() {
-            $rootScope.mostrarMenu = 1;
-            // if ($rootScope.userData.idPerfil == 4) {
-            // 	$rootScope.controlDepositosAcceso = 0;
-            //     $rootScope.conciliacionAccesso = 1;
-            //     console.log('Administrador Control Depositos')
-            // } else {
-            //     if ($rootScope.userData.idPerfil == 5) {
-            //         $rootScope.controlDepositosAcceso = 1;
-            //         $rootScope.conciliacionAccesso = 1;
-            //     }else{
-            //         $rootScope.controlDepositosAcceso = 1;
-            //         $rootScope.conciliacionAccesso = 0;
-            //     }
-            //
-            // }
-            // console.log($rootScope.datosUsuario)
-            /*if($rootScope.userData == null){
-            	$rootScope.mostrarMenu = 0;
-            	alertFactory.warning('Inicie Sesión')
-            }else{
-            	alertFactory.success('Bienvenido '+ $rootScope.userData.nombreUsuario)
-            	$rootScope.mostrarMenu = 1;
-            }*/
+            //userFactory.ValidaSesion();
+            $scope.userData = userFactory.getUserData();
+
+            if ($scope.userData != undefined){
+                $rootScope.mostrarMenu = 1;
+                if ($scope.userData[0].perfiles.length > 0){
+                    $scope.userData[0].perfiles.forEach(function(item){
+                        switch (item.idPerfil) {
+                          case 1:
+                            $scope.generadorLayout = true;
+                            break;
+                          case 2:
+                            $scope.cargaLayout = true;
+                            break;
+                          case 3:
+                            $scope.cargaInventario = true;
+                            break;
+                          case 4:
+                            $scope.notificaciones = true;
+                            break;
+                        }
+                    });
+                }else{
+                    $scope.generadorLayout = true;
+                    $scope.cargaLayout = true;
+                    $scope.cargaInventario = true;
+                    $scope.notificaciones = true;
+                }
+            }
         }
 
         // ************** Función para cerrar sesión
         // ************** NOTA se limpian todos los localStorage utilizados
     $scope.salir = function() {
-        // alertFactory.warning('Hasta luego ' + $rootScope.userData.nombreUsuario)
-        // localStorageService.clearAll('userData');
-        // localStorageService.clearAll('empleadoDatos');
-        // localStorageService.clearAll('lgnUser');
-        // localStorage.removeItem('paramBusqueda');
-
-        location.href = '/';
+        userFactory.logOut();
     }
 });
