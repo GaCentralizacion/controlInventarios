@@ -1,0 +1,9 @@
+{
+    "port": 5400,
+	"SQL_user": "sa",
+    "SQL_password": "S0p0rt3",
+    "SQL_server": "192.168.20.9",
+    "SQL_database": "ControlInventarios",
+    "SQL_connectionTimeout": 60000
+
+}
