@@ -180,12 +180,15 @@ Layout.prototype.get_create = function(req, res, next) {
     });
 
     // Se escribe el documento de excel
-    wb.write('Excel.xlsx', function( err, stats ){
-        if (err) {
-            console.error(err);
-        } 
-        console.log(stats);
+    wb.writeToBuffer().then(function (buffer) {
+        // Do something with buffer 
     });
+    // wb.write('Excel.xlsx', function( err, stats ){
+    //     if (err) {
+    //         console.error(err);
+    //     } 
+    //     console.log(stats);
+    // });
 
     self.view.expositor(res, {
         error: false,
