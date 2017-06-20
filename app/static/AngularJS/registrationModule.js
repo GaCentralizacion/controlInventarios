@@ -16,14 +16,16 @@ var registrationModule = angular.module("registrationModule", ["ngRoute", "Local
             controller: 'layoutsController'
         });
         $routeProvider.when('/cargaLayout', {
-            templateUrl: 'AngularJS/Templates/cargaLayouts.html'
+            templateUrl: 'AngularJS/Templates/cargaLayouts.html',
+            controller: 'cargaLayoutsController'
         });
         $routeProvider.when('/cargaInventario', {
             templateUrl: 'AngularJS/Templates/cargaInventario.html',
             controller: 'cargaInventarioController'
         });
         $routeProvider.when('/notificaciones', {
-            templateUrl: 'AngularJS/Templates/notificacionCambioEstatus.html'
+            templateUrl: 'AngularJS/Templates/notificacionCambioEstatus.html',
+            controller: 'notificacionCambioEstatusController'
         });
 
 
