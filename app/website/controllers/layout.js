@@ -19,15 +19,17 @@ Layout.prototype.get_create = function(req, res, next) {
     var self = this;
 
     var xl = require('excel4node');
-    var wb = new xl.Workbook();
+    var wb = new xl.Workbook({
+        defaultFont: {
+            size: 11,
+            name: 'Calibri'
+        }
+    });
     var ws = wb.addWorksheet("Inventario");
 
     // Estilos usados en el excel
     var sty_th = wb.createStyle({
-        font: {
-            size: 12,
-            bold: true
-        },
+        font: { bold: true },
         border: { //§18.18.3 ST_BorderStyle (Border Line Styles) ['none', 'thin', 'medium', 'dashed', 'dotted', 'thick', 'double', 'hair', 'mediumDashed', 'dashDot', 'mediumDashDot', 'dashDotDot', 'mediumDashDotDot', 'slantDashDot']
             left: {style: 'thin', },
             right: {style: 'thin', },
@@ -35,12 +37,15 @@ Layout.prototype.get_create = function(req, res, next) {
             bottom: {style: 'thin', }
         }
     });
-    var sty_little = wb.createStyle({
-        font: {
-            size: 8,
-            bold: true
-        }
+
+    var sty_title = wb.createStyle({
+        font: { size: 18, bold: true }
     });
+
+    var sty_litle = wb.createStyle({
+        font: { size: 8, bold: true }
+    });
+
     var sty_border = wb.createStyle({
         border: { 
             left: {style: 'thin', },
@@ -85,18 +90,25 @@ Layout.prototype.get_create = function(req, res, next) {
         ]};
 
     // Se asignan los anchos de las columnas
-    ws.column(1).setWidth(17);
-    ws.column(2).setWidth(19);
-    ws.column(3).setWidth(26);
-    ws.column(4).setWidth(18);
-    ws.column(5).setWidth(18);
-    ws.column(6).setWidth(18);
+    ws.column(1).setWidth(24);
+    ws.column(2).setWidth(20);
+    ws.column(3).setWidth(27);
+    ws.column(4).setWidth(20);
+    ws.column(5).setWidth(19);
+    ws.column(6).setWidth(30);
 
     // Fila Inicial
-    var row = 2;
+    var row = 1;
+
+    // Titulo
+    ws.cell(row, 1 ).string( "Inventario de Accesorios" ).style( sty_title );
+    row++;
+    row++;
+    row++;
+
     // Empresa y sucursales
-    ws.cell(row, 1).string( "EMPRESA" ).style( sty_little );
-    ws.cell(row, 5).string( "SUCURSAL" ).style( sty_little );
+    ws.cell(row, 1).string( "EMPRESA" ).style( sty_litle );
+    ws.cell(row, 5).string( "SUCURSAL" ).style( sty_litle );
     row++;
 
     ws.cell(row, 1, row, 2, true).string( json.empresa ).style( sty_underline );
@@ -104,7 +116,7 @@ Layout.prototype.get_create = function(req, res, next) {
     ws.addDataValidation({
         type: 'list',
         allowBlank: true,
-        prompt: 'Elije una sucursal',
+        prompt: 'Elija una sucursal',
         error: 'Sucursal inválida, debe escoger una de la lista.',
         showDropDown: true,
         sqref: 'E' + row,
@@ -112,23 +124,40 @@ Layout.prototype.get_create = function(req, res, next) {
     });
     row++;
     row++;
+
+    // Datos generales del inventario
+    ws.cell(row, 1).string( "VIN" ).style( sty_litle );
+    ws.cell(row, 2).string( "No. INVENTARIO" ).style( sty_litle );
+    ws.cell(row, 3).string( "CATÁLOGO" ).style( sty_litle );
+    ws.cell(row, 4, row, 5, true).string( "DESCRIPCIÓN" ).style( sty_litle );
+    ws.cell(row, 6).string( "AÑO" ).style( sty_litle );
+    row++;
+
+    ws.cell(row, 1).string( json.vin );
+    ws.cell(row, 2).number( json.No );
+    ws.cell(row, 3).string( json.catalogo );
+    ws.cell(row, 4, row, 5, true).string( json.descripcion );
+    ws.cell(row, 6).number( json.anio );
     row++;
     row++;
 
-    ws.cell(row, 1).string( "VIN" ).style( sty_little );
-    ws.cell(row, 2).string( "No. INVENTARIO" ).style( sty_little );
-    ws.cell(row, 3).string( "CATÁLOGO" ).style( sty_little );
-    ws.cell(row, 4, row, 5, true).string( "DESCRIPCIÓN" ).style( sty_little );
-    ws.cell(row, 6).string( "AÑO" ).style( sty_little );
+    // Datos generales del inventario
+    ws.cell(row, 1).string( "FOLIO DE REVISIÓN" ).style( sty_litle );
+    ws.cell(row, 2, row, 3, true).string( "FECHA / HORA DE LEVANTAMIENTO" ).style( sty_litle );
+    ws.cell(row, 4).string( "OBSERVACIONES GENERALES" ).style( sty_litle );
+    ws.cell(row, 5).string( "PREVIA" ).style( sty_litle );
+    ws.cell(row, 6).string( "USAURIO" ).style( sty_litle );
     row++;
 
-    ws.cell(row, 1).string( "VIN" ).style( sty_little );
-    ws.cell(row, 2).string( "No. INVENTARIO" ).style( sty_little );
-    ws.cell(row, 3).string( "CATÁLOGO" ).style( sty_little );
-    ws.cell(row, 4, row, 5, true).string( "DESCRIPCIÓN" ).style( sty_little );
-    ws.cell(row, 6).string( "AÑO" ).style( sty_little );
+    ws.cell(row, 1).number( json.historico.folio );
+    ws.cell(row, 2, row, 3, true).string( json.historico.levantamiento );
+    ws.cell(row, 4).string( json.historico.observaciones );
+    ws.cell(row, 5).string( json.historico.previa );
+    ws.cell(row, 6).string( json.historico.usuario );
     row++;
     
+    row++;
+    row++;
     // Se insertan las cabeceras de la tabla
     ws.cell( row, 1 ).string( 'FOLIO DE REVISIÓN' ).style( sty_th );
     ws.cell( row, 2 ).string( 'FOLIO HERRAMIENTA' ).style( sty_th );
@@ -146,9 +175,7 @@ Layout.prototype.get_create = function(req, res, next) {
         ws.cell( row, 4 ).string( '' ).style( sty_border );
         ws.cell( row, 5 ).string( '' ).style( sty_border );
         ws.cell( row, 6 ).string( '' ).style( sty_border );
-
         ws.row( row ).setHeight(20);
-
         row++;
     });
 
