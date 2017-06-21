@@ -5,6 +5,7 @@
 
     //**************************Init del controller**************************
     $scope.init = function() {
+      $rootScope.mostrarMenu = 0;
       $scope.userData = userFactory.getUserData();
       if ($scope.userData != null || $scope.userData != undefined){
         $scope.myFirstModule();
@@ -13,7 +14,7 @@
         if (!($('#lgnUser').val().indexOf('[') > -1)) {
             var user = $('#lgnUser').val();
             $scope.login(user, '', '');
-            $rootScope.mostrarMenu = 0;
+
         } else if (($('#lgnUser').val().indexOf('[') > -1) && !localStorageService.get('lgnUser')) {
             alert('Inicie sesión desde panel de aplicaciones o desde el login.');
         }
