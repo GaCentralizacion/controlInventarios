@@ -1,1 +1,26 @@
-<div ng-init="init()"></div>
+<div ng-init="init()">
+  <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <br>
+  </div>
+  <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="userData.cargaInventario == true">
+
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+      <label class="font-noraml">Empresa</label>
+      <select class="form-control m-b" id="empresa" ng-model="empresaSelected"  >
+          <option value="">Seleccione una Empresa</option>
+      </select>
+    </div>
+
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+      <label class="font-noraml">Sucursal</label>
+      <select class="form-control m-b" id="sucursal" ng-model="sucursalSelected" >
+          <option value="">Seleccione una Sucursal</option>
+      </select>
+    </div>
+
+  </div>
+  <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12" >
+    <h4>Captura de Inventario</h4>
+  </div>
+
+</div>
