@@ -10,7 +10,13 @@
         $scope.myFirstModule();
       }else{
         localStorageService.clearAll();
-        $rootScope.mostrarMenu = 0;
+        if (!($('#lgnUser').val().indexOf('[') > -1)) {
+            var user = $('#lgnUser').val();
+            $scope.login(user, '', '');
+            $rootScope.mostrarMenu = 0;
+        } else if (($('#lgnUser').val().indexOf('[') > -1) && !localStorageService.get('lgnUser')) {
+            alert('Inicie sesión desde panel de aplicaciones o desde el login.');
+        }
       }
 
     }
