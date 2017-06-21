@@ -26,7 +26,8 @@ Login.prototype.get_validaLogin = function(req, res, next) {
     var self = this;
 
     var params = [{name: 'usuario', value: req.query.usuario, type: self.model.types.STRING },
-                  {name: 'password', value: req.query.password, type: self.model.types.STRING }];
+                  {name: 'password', value: req.query.password, type: self.model.types.STRING },
+                  {name: 'username', value: req.query.username, type: self.model.types.STRING }];
 
     self.model.query('SEL_LOGIN_SP', params, function(error, result) {
         if (result.length > 0){

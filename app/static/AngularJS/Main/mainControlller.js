@@ -1,8 +1,4 @@
 registrationModule.controller('mainController', function($scope, $rootScope, $location, localStorageService, alertFactory, userFactory) {
-    $scope.generadorLayout = false;
-    $scope.cargaLayout = false;
-    $scope.cargaInventario = false;
-    $scope.notificaciones = false;
 
     $scope.init = function() {
             //userFactory.ValidaSesion();

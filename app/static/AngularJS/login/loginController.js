@@ -16,8 +16,9 @@
     }
 
     // ************************* Función para logueo *************************
-    $scope.login = function(usuario, contrasenia) {
-        loginRepository.getUsuario(usuario, contrasenia).then(function(result) {
+    $scope.login = function(usuario, contrasenia, username) {
+
+        loginRepository.getUsuario(usuario, contrasenia, username).then(function(result) {
 
             if (result.data.length > 0) {
                 $scope.userData = userFactory.saveUserData(result.data[0]);
@@ -35,6 +36,10 @@
           location.href = '/generaLayout';
       }else if ($scope.userData.cargaInventario == true) {
           location.href = '/cargaInventario';
+      }else if ($scope.userData.cargaLayout == true){
+          location.href = '/cargaLayout';
+      } else if ($scope.userData.notificaciones == true) {
+          location.href = '/notificaciones';
       }
     }
 
