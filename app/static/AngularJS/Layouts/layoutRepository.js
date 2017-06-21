@@ -3,21 +3,15 @@ var layoutURL = global_settings.urlCORS + 'api/layout/';
 
 registrationModule.factory('layoutRepository', function($http) {
     return {
-        generateLayout: function(usuario, password) {
+        generateLayout: function() {
             return $http({
                 url: layoutURL + 'create/',
                 method: "GET",
-                params: {
-                    usuario: usuario,
-                    password: password
-                },
+                params: {},
                 headers: {
                     'Content-Type': 'application/json'
                 }
-
             });
-        },
-
+        }
     };
-
 });

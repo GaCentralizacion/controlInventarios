@@ -14,7 +14,6 @@ var Layout = function(conf) {
     };
 };
 
-
 Layout.prototype.get_create = function(req, res, next) {
     var self = this;
 
@@ -180,19 +179,29 @@ Layout.prototype.get_create = function(req, res, next) {
     });
 
     // Se escribe el documento de excel
-    wb.writeToBuffer().then(function (buffer) {
-        // Do something with buffer 
-    });
-    // wb.write('Excel.xlsx', function( err, stats ){
-    //     if (err) {
-    //         console.error(err);
-    //     } 
-    //     console.log(stats);
-    // });
+    var nameLayout =  new Date().getTime() + '.xlsx'
+    wb.write( 'app/static/Layout/' + nameLayout, function( err, stats ){
+        if (err) {
+            console.error(err);
+            self.view.expositor(res, {
+                error: true,
+                result: err
+            });
+        } 
 
-    self.view.expositor(res, {
-        error: false,
-        result: "Se esta creando un excel"
+        self.view.expositor(res, {
+            error: false,
+            result: {Success: true, Msg: 'Se genero el Layout correctamente', Name: nameLayout}
+        });
+
+        setTimeout( function(){
+            var fs = require("fs");
+            fs.unlink('app/static/Layout/' + nameLayout, function(err) {
+               if (err) {
+                   return console.error(err);
+               }
+            });            
+        }, 5000 );
     });
 };
 
