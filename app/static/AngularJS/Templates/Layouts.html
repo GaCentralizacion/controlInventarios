@@ -1,25 +1,38 @@
-<div class="panel panel-default">
+<div class="panel panel-default" ng-init="init();">
   	<div class="panel-body">
   		<div class="row">
   			<div class="col-sm-6">
   				<span>EMPRESA</span>
-  				<select class="form-control">
-  					<option>Seleccione...</option>
-  					<option>ANDRADE UNIVERSIDAD SA DE CV</option>
-  				</select>
+  				<select class="form-control" ng-change="EmpresaSeleccionada();" ng-model="indice">
+                    <option ng-repeat="(key, emp) in Empresas" value="{{ key }}">{{ emp.emp_nombre }}</option>
+                </select>
   			</div>
-  			<div class="col-sm-6">
+  			
+            <div class="col-sm-6">
   				<span>SUCURSAL</span>
-  				<select class="form-control">
-  					<option>Seleccione...</option>
-  					<option>CUATITLA</option>
-  					<option>PEDREGAL</option>
-  					<option>UNIVERSIDAD</option>
+  				<select class="form-control" ng-model="idSucursal">
+                    <option ng-repeat="(key, suc) in Empresas[indice].Sucursales" value="{{ suc.suc_idsucursal }}">{{ suc.suc_nombre }}</option>
   				</select>
   			</div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-sm-6">
+                <span>AÑO</span>
+                <select class="form-control" ng-model="idAnio">
+                    <option ng-repeat="anio in Anio">{{ anio.iae_anomodelo }}</option>
+                </select>
+            </div>
+
+            <div class="col-sm-6">
+                <span>MODELO</span>
+                <select class="form-control" ng-model="idModelo">
+                    <option ng-repeat="modelo in Modelo | filter:{ iae_anomodelo:  }">{{ modelo.iae_idcatalogo }}</option>
+                </select>
+            </div>
   		</div>
 
-  		<div class="row">
+  		<div class="row hidden">
   			<div class="col-sm-12">
   				<span>VIN</span>
   				<input type="text" name="" class="form-control">

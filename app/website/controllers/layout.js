@@ -14,6 +14,47 @@ var Layout = function(conf) {
     };
 };
 
+Layout.prototype.get_empresaByUser = function(req, res, next) {
+    var self = this;
+
+    var params = [{name: 'idUsuario', value: req.query.idUsuario, type: self.model.types.STRING }];
+
+    self.model.query('SEL_EMPRESA_BY_USUARIO_SP', params, function(error, result) {
+        var Empresa = result; 
+        
+        Empresa.forEach( function( item, key ){
+            var param_suc = [{name: 'idUsuario', value: req.query.idUsuario, type: self.model.types.INT },
+                             {name: 'idEmpresa', value: item.emp_idempresa, type: self.model.types.INT }];
+
+            self.model.query('SEL_SUCURSAL_BY_USUARIO_SP', param_suc, function(err, resultado) {
+                var Sucursal = resultado;
+                Empresa[ key ].Sucursales = Sucursal;
+
+                if( key >= ( Empresa.length - 1) ){
+                    self.view.expositor(res, {
+                        error: error,
+                        result: Empresa
+                    });
+                }
+            });
+        });
+    });
+}
+
+Layout.prototype.get_anioModelo = function(req, res, next) {
+    var self = this;
+
+    var params = [];
+
+    self.model.queryAllRecordSet('SEL_ANIO_MODELO_SP', params, function(error, result) {
+        var Modelos = result; 
+        self.view.expositor(res, {
+            error: error,
+            result: Modelos
+        });
+    });
+}
+
 Layout.prototype.get_create = function(req, res, next) {
     var self = this;
 
