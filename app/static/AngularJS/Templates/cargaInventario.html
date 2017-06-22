@@ -3,24 +3,26 @@
   <div ng-show="userData.cargaInventario == true">
     <div class="panel panel-default">
       	<div class="panel-body">
-              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                <label class="font-noraml">EMPRESA</label>
-                <select class="form-control m-b" id="empresa" ng-model="indice" ng-change="EmpresaSeleccionada(indice);" ng-options="key as emp.emp_nombre for (key, emp) in Empresas">
-                    <option value=''>Seleccione...</option>
-                </select>
-              </div>
+            <div class="row">
+                  <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                    <label class="font-noraml">EMPRESA</label>
+                    <select class="form-control m-b" id="empresa" ng-model="indice" ng-change="EmpresaSeleccionada(indice);" ng-options="key as emp.emp_nombre for (key, emp) in Empresas">
+                        <option value=''>SELECCIONE...</option>
+                    </select>
+                  </div>
 
-              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                <label class="font-noraml">SUCURSAL</label>
-                <select class="form-control m-b" id="sucursal" ng-model="idSucursal" ng-options="suc.suc_idsucursal as suc.suc_nombre for suc in Empresas[indice].Sucursales">
-                    <option value='' >Seleccione...</option>
-                </select>
-              </div>
+                  <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                    <label class="font-noraml">SUCURSAL</label>
+                    <select class="form-control m-b" id="sucursal" ng-model="idSucursal" ng-options="suc.suc_idsucursal as suc.suc_nombre for suc in Empresas[indice].Sucursales">
+                        <option value='' >SELECCIONE...</option>
+                    </select>
+                  </div>
 
-              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        				<label class="font-noraml">VIN</LABEL>
-        				<input type="text" name="vin" class="form-control" ng-model="vin">
-        			</div>
+                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            				<label class="font-noraml">VIN</LABEL>
+            				<input type="text" name="vin" class="form-control" ng-model="vin">
+            			</div>
+              </div>
         </div>
         <div class="panel-footer">
           <div class="row">
@@ -28,34 +30,34 @@
       				<button class="btn btn-success pull-left" ng-click="">Ver Historial</button>
       			</div> -->
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-              <button class="btn btn-success pull-right " ng-click="buscar()">Buscar</button>
+              <button class="btn btn-success pull-right" ng-click="buscar()">Buscar</button>
             </div>
           </div>
       	</div>
     </div>
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" >
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
       <div class="panel panel-default">
         <div class="panel-body">
             <div class="row">
               <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                 <label class="font-noraml">VIN</LABEL>
-                <input type="text" name="vinUnidad" class="form-control controlDisable" ng-model="vinUnidad" readonly>
+                <input type="text" name="vinUnidad" class="form-control controlDisable" ng-model="Inv.vin" readonly>
               </div>
               <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
                 <label class="font-noraml">NÚM. INVENTARIO</LABEL>
-                <input type="text" name="numInventario"  class="form-control controlDisable" ng-model="numInventario" readonly>
+                <input type="text" name="numInventario"  class="form-control controlDisable" value="{{Inv.NoInventario + 1}}" readonly>
               </div>
               <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
                 <label class="font-noraml">CATÁLOGO</LABEL>
-                <input type="text" name="catalogo" class="form-control controlDisable" ng-model="catalogo" readonly>
+                <input type="text" name="catalogo" class="form-control controlDisable" ng-model="Inv.catalogo" readonly>
               </div>
               <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
                 <label class="font-noraml">DESCRIPCIÓN</LABEL>
-                <input type="text" name="descripcion" class="form-control controlDisable" ng-model="descripcion" readonly>
+                <input type="text" name="descripcion" class="form-control controlDisable" ng-model="Inv.modelo" readonly>
               </div>
               <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
                 <label class="font-noraml">AÑO</LABEL>
-                <input type="text" name="anio" class="form-control controlDisable" ng-model="anio" readonly>
+                <input type="text" name="anio" class="form-control controlDisable" ng-model="Inv.anioModelo" readonly>
               </div>
             </div>
             <br/>
@@ -64,28 +66,28 @@
                   <table class="table table-bordered table-hover ">
                       <thead>
                           <tr>
-                              <th>Descripción</th>
-                              <th>Dañado</th>
-                              <th>Cantidad Recibida</th>
-                              <th>Cantidad Dañados</th>
-                              <th>Observaciones</th>
+                              <th>DESCRIPCIÓN</th>
+                              <th>DAÑADO</th>
+                              <th>CANTIDAD RECIBIDA</th>
+                              <th>CANTIDAD DAÑADOS</th>
+                              <th>OBSERVACIONES</th>
                               <!-- <th>Eliminar</th> -->
                           </tr>
                       </thead>
                       <tbody>
-                          <tr>
-                              <td>Descripción Accesorio</td>
+                          <tr ng-repeat="acce in Inv.detalle">
+                              <td>{{acce.caa_descripacce}}</td>
                               <td>
-                                  <input type="checkbox" ng-model="daniado[index]">
+                                  <input type="checkbox" ng-model="acce.daniado">
                               </td>
                               <td>
-                                  <input type="number" min="0" class="form-control" ng-model="cantRecibida[index]">
+                                  <input type="number" min="0" class="form-control" ng-model="acce.cantRecibida">
                               </td>
                               <td>
-                                  <input type="number" min="0" class="form-control" ng-model="cantDaniados[index]">
+                                  <input type="number" min="0" class="form-control" ng-model="acce.cantDaniados">
                               </td>
                               <td>
-                                  <input type="text" class="form-control" ng-model="observaciones[index]">
+                                  <input type="text" class="form-control" ng-model="acce.observaciones">
                               </td>
                               <!-- <td><button class="btn btn-danger glyphicon glyphicon-trash" ng-click=""></button></td> -->
                           </tr>
@@ -93,11 +95,17 @@
                   </table>
                 </div>
             </div>
+            <div class="row">
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-right">
+                <label class="font-noraml">OBSERVACIONES</LABEL>
+                <input type="text" name="obsGrales" class="form-control" ng-model="Inv.Observaciones">
+              </div>
+          </div>
         </div>
         <div class="panel-footer">
           <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-              <button class="btn btn-success pull-right" ng-click="">Cargar Inventario</button>
+              <button class="btn btn-success pull-right" ng-click="guardarInventario()">Cargar Inventario</button>
             </div>
           </div>
         </div>

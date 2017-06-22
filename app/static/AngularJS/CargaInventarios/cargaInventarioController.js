@@ -1,10 +1,9 @@
-registrationModule.controller('cargaInventarioController', function($scope, $rootScope, $location, userFactory, alertFactory, layoutRepository) {
+registrationModule.controller('cargaInventarioController', function($scope, $rootScope, $location, userFactory, alertFactory, layoutRepository, cargaInventarioRepository) {
 
     $scope.Empresas = [];
     $scope.idEmpresa  = 0;
     $scope.idSucursal = 0;
-    $scope.accesoriosInv = [];
-    $scope.daniado = [];
+    $scope.Inv = {};
 
     $scope.init = function() {
       userFactory.ValidaSesion();
@@ -17,6 +16,7 @@ registrationModule.controller('cargaInventarioController', function($scope, $roo
     $scope.getEmpresas = function( idUsuario ){
         layoutRepository.getEmpresas( idUsuario ).then(function(result){
             $scope.Empresas = result.data;
+            console.log("Empresas", $scope.Empresas);
         }, function(error){
             console.log("Error", error);
         });
@@ -32,14 +32,34 @@ registrationModule.controller('cargaInventarioController', function($scope, $roo
     }
 
     $scope.buscar = function (){
-      console.log("Valor del Check", $scope.daniado)
+      // console.log("Valor del Check", $scope.daniado)
       var empresa = $scope.idEmpresa;
       var sucursal = $scope.idSucursal;
       var vinBuscar = $scope.vin == '' || $scope.vin == undefined ? null : $scope.vin;
+
+      $scope.Inv = {};
+
       if(empresa == 0 || sucursal == 0 || sucursal == null || vinBuscar == null){
           alertFactory.info('Ingrese los datos completos.');
+      }else{
+          cargaInventarioRepository.getAccesoriosInventarioByVin(empresa, sucursal, vinBuscar).then(function(result){
+                if (result.data.length > 0){
+                    $scope.Inv = result.data[0];
+                    if (!($scope.Inv.detalle.length > 0)) {
+                        alertFactory.info('La unidad no cuenta con accesorios.')
+                    }
+                }else {
+                    alertFactory.info('No se encontró la unidad en la sucursal solicitada.');
+                }
+          }, function(error){
+              console.log("Error", error);
+          });
       }
 
+    }
+
+    $scope.guardarInventario = function(){
+      console.log('Detalle', $scope.Inv);
     }
 
 });

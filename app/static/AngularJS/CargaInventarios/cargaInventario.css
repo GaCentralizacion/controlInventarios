@@ -1,3 +1,7 @@
 .controlDisable{
   background-color: white !important;
 }
+
+input{
+  text-transform:uppercase;
+}
