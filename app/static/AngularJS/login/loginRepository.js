@@ -1,6 +1,5 @@
 var loginURL = global_settings.urlCORS + 'api/login/';
 
-
 registrationModule.factory('loginRepository', function($http) {
     return {
         getUsuario: function(usuario, password, username) {

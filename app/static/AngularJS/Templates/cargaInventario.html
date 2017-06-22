@@ -1,26 +1,106 @@
+<link href="AngularJS/CargaInventarios/cargaInventario.css" rel="stylesheet">
 <div ng-init="init()">
-  <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12">
-      <br>
-  </div>
-  <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="userData.cargaInventario == true">
+  <div ng-show="userData.cargaInventario == true">
+    <div class="panel panel-default">
+      	<div class="panel-body">
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <label class="font-noraml">EMPRESA</label>
+                <select class="form-control m-b" id="empresa" ng-model="indice" ng-change="EmpresaSeleccionada(indice);" ng-options="key as emp.emp_nombre for (key, emp) in Empresas">
+                    <option value=''>Seleccione...</option>
+                </select>
+              </div>
 
-    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-      <label class="font-noraml">Empresa</label>
-      <select class="form-control m-b" id="empresa" ng-model="empresaSelected"  >
-          <option value="">Seleccione una Empresa</option>
-      </select>
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <label class="font-noraml">SUCURSAL</label>
+                <select class="form-control m-b" id="sucursal" ng-model="idSucursal" ng-options="suc.suc_idsucursal as suc.suc_nombre for suc in Empresas[indice].Sucursales">
+                    <option value='' >Seleccione...</option>
+                </select>
+              </div>
+
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        				<label class="font-noraml">VIN</LABEL>
+        				<input type="text" name="vin" class="form-control" ng-model="vin">
+        			</div>
+        </div>
+        <div class="panel-footer">
+          <div class="row">
+      			<!-- <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+      				<button class="btn btn-success pull-left" ng-click="">Ver Historial</button>
+      			</div> -->
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <button class="btn btn-success pull-right " ng-click="buscar()">Buscar</button>
+            </div>
+          </div>
+      	</div>
     </div>
-
-    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-      <label class="font-noraml">Sucursal</label>
-      <select class="form-control m-b" id="sucursal" ng-model="sucursalSelected" >
-          <option value="">Seleccione una Sucursal</option>
-      </select>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" >
+      <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="row">
+              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <label class="font-noraml">VIN</LABEL>
+                <input type="text" name="vinUnidad" class="form-control controlDisable" ng-model="vinUnidad" readonly>
+              </div>
+              <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
+                <label class="font-noraml">NÚM. INVENTARIO</LABEL>
+                <input type="text" name="numInventario"  class="form-control controlDisable" ng-model="numInventario" readonly>
+              </div>
+              <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
+                <label class="font-noraml">CATÁLOGO</LABEL>
+                <input type="text" name="catalogo" class="form-control controlDisable" ng-model="catalogo" readonly>
+              </div>
+              <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
+                <label class="font-noraml">DESCRIPCIÓN</LABEL>
+                <input type="text" name="descripcion" class="form-control controlDisable" ng-model="descripcion" readonly>
+              </div>
+              <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
+                <label class="font-noraml">AÑO</LABEL>
+                <input type="text" name="anio" class="form-control controlDisable" ng-model="anio" readonly>
+              </div>
+            </div>
+            <br/>
+            <div class="row">
+              <div class="table-responsive">
+                  <table class="table table-bordered table-hover ">
+                      <thead>
+                          <tr>
+                              <th>Descripción</th>
+                              <th>Dañado</th>
+                              <th>Cantidad Recibida</th>
+                              <th>Cantidad Dañados</th>
+                              <th>Observaciones</th>
+                              <th>Eliminar</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr>
+                              <td>Descripción Accesorio</td>
+                              <td>
+                                  <input type="checkbox" ng-model="daniado[index]">
+                              </td>
+                              <td>
+                                  <input type="number" min="0" class="form-control" ng-model="cantRecibida[index]">
+                              </td>
+                              <td>
+                                  <input type="number" min="0" class="form-control" ng-model="cantDaniados[index]">
+                              </td>
+                              <td>
+                                  <input type="text" class="form-control" ng-model="observaciones[index]">
+                              </td>
+                              <td><button class="btn btn-danger glyphicon glyphicon-trash" ng-click=""></button></td>
+                          </tr>
+                      </tbody>
+                  </table>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer">
+          <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <button class="btn btn-success pull-right" ng-click="">Cargar Inventario</button>
+            </div>
+          </div>
+        </div>
     </div>
-
   </div>
-  <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12" >
-    <h4>Captura de Inventario</h4>
-  </div>
-
 </div>
