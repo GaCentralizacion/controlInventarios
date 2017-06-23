@@ -70,11 +70,44 @@ Layout.prototype.get_accesorios = function(req, res, next) {
     });
 }
 
+Layout.prototype.get_guardaLayout = function(req, res, next) {
+    var self = this;
+
+    var params = [{name: 'idEmpresa', value: req.query.idEmpresa, type: self.model.types.INT },
+                  {name: 'idSucursal', value: req.query.idSucursal, type: self.model.types.INT },
+                  {name: 'Modelo', value: req.query.Modelo, type: self.model.types.STRING },
+                  {name: 'Anio', value: req.query.Anio, type: self.model.types.INT },
+                  {name: 'idUsuario', value: req.query.idUsuario, type: self.model.types.INT },
+                  {name: 'key', value: req.query.key, type: self.model.types.STRING }];
+
+    self.model.queryAllRecordSet('INS_LAYOUT_SP', params, function(error, result) {
+        var Layout = result; 
+        self.view.expositor(res, {
+            error: error,
+            result: Layout
+        });
+    });
+}
+
+Layout.prototype.get_validaLayout = function(req, res, next) {
+    var self = this;
+
+    var params = [{name: 'Key', value: req.query.Key, type: self.model.types.STRING }];
+
+    self.model.queryAllRecordSet('[SEL_VALIDA_LAYOUT_SP]', params, function(error, result) {
+        var Layout = result; 
+        self.view.expositor(res, {
+            error: error,
+            result: Layout
+        });
+    });
+}
+
 Layout.prototype.get_readLayout = function(req, res, next){
     var self = this;
     var parseXlsx = require('excel');
 
-    parseXlsx('1498228920253.xlsx', function(err, data) {
+    parseXlsx('uploaded/' + req.query.LayoutName, function(err, data) {
         if(err){
             self.view.expositor(res, {
                 error: err,
@@ -83,10 +116,39 @@ Layout.prototype.get_readLayout = function(req, res, next){
             throw err;
         };
 
-        // console.log( data );
         self.view.expositor(res, {
             error: false,
             result: {success:false, msg:"", data: data}
+        });
+    });
+}
+
+Layout.prototype.post_upload = function(req, res, next){
+    var self = this;
+    var filename = String(new Date().getTime());
+    var multer = require('multer');
+    var storage = multer.diskStorage({
+        destination: function( req, file, callback ){
+            callback( null, 'uploaded/' );
+        },
+        filename: function( req, file, callback ){
+
+            callback( null, filename + '.xlsx' );
+        }
+    });
+    
+    var upload = multer( { storage: storage } ).any();
+
+    upload( req, res, function( err ){
+        if( err ){
+            console.log( err );
+            return res.end("Error uploading file.");
+        }
+        console.log('Craga correcta');
+
+        self.view.expositor(res, {
+            error: false,
+            result: {success: true, filename: filename}
         });
     });
 }
@@ -203,23 +265,11 @@ Layout.prototype.get_create = function(req, res, next) {
             bgColor: '203764'
         }
     });
+
+    var sty_white = wb.createStyle({
+        font: { color: '#ffffff' }
+    });
     
-    // var json = {
-    //         empresa: 'ANDRADE UNIVERSIDAD SA DE CV',
-    //         sucursal: ['UNIVERSIDAD', 'SAN ANGEL', 'SAN JERONIMO'],
-    //         catalogo: 'SWIFTG78YH',
-    //         descripcion: 'SWIFTG78YH 1.2L GLX 5MT',
-    //         anio: 2018,
-    //         accesorios:[
-    //             {folio_herr:1, descripcion: 'KIT DE HERRAMIENTA'},
-    //             {folio_herr:2, descripcion: 'GATO'},
-    //             {folio_herr:3, descripcion: 'POLIZA DE GARANTIA'},
-    //             {folio_herr:4, descripcion: 'LLANTA DE REFACCION'},
-    //             {folio_herr:5, descripcion: 'TAPETES'},
-    //             {folio_herr:5, descripcion: 'ANTENA'},
-    //             {folio_herr:5, descripcion: 'MANUALES'},
-    //             {folio_herr:5, descripcion: 'TARJETA SD'}
-    //         ]};
     var json = JSON.parse( req.query.jsonData );
 
     // Se asignan los anchos de las columnas
@@ -230,9 +280,10 @@ Layout.prototype.get_create = function(req, res, next) {
     ws.column(5).setWidth(19);
     ws.column(6).setWidth(30);
 
+    // Insercion de llave
+    ws.cell(1,6 ).string( json.key ).style( sty_white );
     // Titulo
     ws.cell(3, 1, 3, 6, true ).string( "Inventario de Accesorios" ).style( sty_title );
-
 
     ws.addImage({
         path: 'FondoAndrade.png',
@@ -274,7 +325,7 @@ Layout.prototype.get_create = function(req, res, next) {
     // Datos generales del inventario
     ws.cell(row, 1).string( "FOLIO DE REVISIÓN" ).style( sty_litle );
     ws.cell(row, 2, row, 3, true).string( "FECHA / HORA DE LEVANTAMIENTO" ).style( sty_litle );
-    ws.cell(row, 6).string( "USAURIO" ).style( sty_litle );
+    ws.cell(row, 6).string( "USUARIO" ).style( sty_litle );
     row++;
 
     ws.cell(row, 1).string( '' ).style( sty_bgcolor );

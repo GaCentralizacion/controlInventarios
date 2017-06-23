@@ -1,16 +1,17 @@
-registrationModule.controller('layoutController', function($scope, $rootScope, $location, alertFactory, layoutRepository, filterFilter) {
+registrationModule.controller('layoutController', function($scope, $rootScope, $location, alertFactory, layoutRepository, filterFilter, md5) {
     $scope.idUsuario  = 71; // 1, 71
     $scope.idEmpresa  = 0;
     $scope.idSucursal = 0;
     $scope.idModelo   = '';
     $scope.idAnio     = '';
+    $scope.key        = '';
     $scope.json       = [];
 
     $scope.Empresas   = [];
     $scope.Sucursales = [];
-    $scope.Anio       = [];
     $scope.Modelo     = [];
     $scope.Accesorios = [];
+    $scope.LayoutFile = [];
 
 
     $scope.init = function() {
@@ -28,8 +29,7 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
 
     $scope.getAnioModelo = function(){
         layoutRepository.getAnioModelo().then(function(result){
-            $scope.Anio   = result.data[0];
-            $scope.Modelo = result.data[1];
+            $scope.Modelo = result.data[0];
         }, function(error){
             console.log("Error", error);
         });
@@ -41,7 +41,9 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
     }
 
     $scope.validaInputs = function(){
-        console.log( $scope.idAnio );
+        var baseHash = new Date().getTime();
+        $scope.key   = md5.createHash( String( baseHash ) );
+
         if( $scope.idEmpresa == 0 || $scope.idEmpresa === null ){
             swal('Layout','No se ha seleccionado la empresa.');
         }
@@ -68,6 +70,7 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
                 });
 
                 $scope.json = {
+                    key: $scope.key,
                     empresa: lbl_empresa[0].emp_nombre,
                     sucursal: lbl_sucursal[0].suc_nombre,
                     catalogo: arr_modelo[0].iae_idcatalogo,
@@ -75,7 +78,6 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
                     anio: parseInt($scope.idAnio),
                     accesorios: $scope.Accesorios
                 };
-                // $scope.generateLayout( json );
             }, function(error){
                 console.log("Error", error);
             });
@@ -83,9 +85,14 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
     }
 
     $scope.generateLayout = function(){
-    	layoutRepository.generateLayout( $scope.json ).then(function(result){
-    		var Resultado = result.data;
-    		window.open('Layout/' + Resultado.Name);
+        layoutRepository.insertLayout( $scope.idEmpresa, $scope.idSucursal, $scope.idModelo, $scope.idAnio, $scope.idUsuario, $scope.key ).then(function(result){
+            var Layout = result.data;
+            layoutRepository.generateLayout( $scope.json ).then(function(result){
+                var Resultado = result.data;
+                window.open('Layout/' + Resultado.Name);
+            }, function(error){
+                console.log("Error", error);
+            });
         }, function(error){
             console.log("Error", error);
         });
@@ -103,5 +110,62 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
 
     $scope.Cambios = function(){
         $scope.Accesorios = [];
+    }
+
+    var myDropzone
+    $scope.Dropzone = function(){
+        myDropzone = new Dropzone("#idDropzone", { url: "/api/layout/upload/"});
+        myDropzone.options.myAwesomeDropzone = {
+            paramName: "file", // The name that will be used to transfer the file
+            maxFilesize: 10, // MB
+            addRemoveLinks: true, 
+            uploadMultiple: false,
+            maxFiles:1,
+            accept: function(file, done) {
+                if (file.name == "justinbieber.jpg") {
+                    done("Naha, you don't.");
+                }
+                else { done(); }
+            }
+        };
+
+        myDropzone.on("success", function(req, res) {
+            var filename = res.filename + '.xlsx';
+            $scope.readLayout( filename );
+
+        });
+        
+    }
+
+    $scope.readLayout = function( filename ){
+        layoutRepository.readLayout( filename ).then(function(result){
+            var LayoutFile = result.data.data;
+            $scope.LayoutFile = LayoutFile;
+
+            var key = LayoutFile[0][5];
+
+            console.log( key );
+            $scope.validaLayout( key );
+        }, function(error){
+            console.log("Error", error);
+        });
+    }
+
+    $scope.validaLayout = function( key ){
+        // var key = 'c7a0fd6b564ae60b81846959bba54839';
+        var key = 'f67ab6f0593791373903f3834f4e190e';
+
+        layoutRepository.validaLayout( key ).then(function(result){
+            var Info = result.data;
+            $scope.Layout      = Info[0];
+            $scope.Empresa     = Info[1];
+            $scope.Sucursal    = Info[2];
+            $scope.ModeloAnio  = Info[3];
+            $scope.Accesorios  = Info[4];
+
+            console.log( Info );
+        }, function(error){
+            console.log("Error", error);
+        });
     }
 });
