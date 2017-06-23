@@ -17,7 +17,7 @@ var registrationModule = angular.module("registrationModule", ["ngRoute", "Local
         });
         $routeProvider.when('/cargaLayout', {
             templateUrl: 'AngularJS/Templates/cargaLayouts.html',
-            controller: 'cargaLayoutsController'
+            controller: 'LayoutsController'
         });
         $routeProvider.when('/cargaInventario', {
             templateUrl: 'AngularJS/Templates/cargaInventario.html',
