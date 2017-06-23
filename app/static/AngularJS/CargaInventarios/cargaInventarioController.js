@@ -71,6 +71,21 @@ registrationModule.controller('cargaInventarioController', function($scope, $roo
 
     }
 
+    $scope.cambiaCant = function(index, recibido){
+        if(recibido){
+            var cant = $scope.Inv.detalle[index].cantRecibida;
+            if (cant == undefined){
+                $scope.Inv.detalle[index].cantRecibida = 0;
+              }
+        }
+        else{
+            var cant = $scope.Inv.detalle[index].cantDaniados;
+            if (cant == undefined){
+                $scope.Inv.detalle[index].cantDaniados = 0;
+              }
+        }
+    }
+
     $scope.guardarInventario = function(){
         console.log("Inventario Accesorios", $scope.Inv);
 

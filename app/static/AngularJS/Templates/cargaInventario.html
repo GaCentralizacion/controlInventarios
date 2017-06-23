@@ -74,13 +74,13 @@
                           </tr>
                       </thead>
                       <tbody>
-                          <tr ng-repeat="acce in Inv.detalle">
+                          <tr ng-repeat="(key, acce) in Inv.detalle">
                               <td>{{acce.caa_descripacce}}</td>
                               <td>
-                                  <input type="number" min="0" class="form-control" ng-model="acce.cantRecibida">
+                                  <input type="number" min="0" class="form-control" ng-model="acce.cantRecibida" ng-change="cambiaCant(key,true)" >
                               </td>
                               <td>
-                                  <input type="number" min="0" class="form-control" ng-model="acce.cantDaniados">
+                                  <input type="number" min="0" class="form-control" ng-model="acce.cantDaniados" ng-change="cambiaCant(key,false)">
                               </td>
                               <td>
                                   <input type="text" class="form-control" ng-model="acce.observaciones">
