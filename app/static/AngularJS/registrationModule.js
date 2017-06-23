@@ -3,7 +3,7 @@
 // -- Create date: 19/06/2017
 // -- Description: Is the container of the application
 // -- =============================================
-var registrationModule = angular.module("registrationModule", ["ngRoute", "LocalStorageModule", 'ui.grid', 'ui.grid.selection', 'ui.grid.grouping', 'ui.grid.pinning','ui.grid.edit'])
+var registrationModule = angular.module("registrationModule", ["ngRoute", "LocalStorageModule", 'ui.grid', 'ui.grid.selection', 'ui.grid.grouping', 'ui.grid.pinning','ui.grid.edit','angular-md5'])
     .config(function($routeProvider, $locationProvider) {
 
         /*cheange the routes*/
@@ -17,7 +17,7 @@ var registrationModule = angular.module("registrationModule", ["ngRoute", "Local
         });
         $routeProvider.when('/cargaLayout', {
             templateUrl: 'AngularJS/Templates/cargaLayouts.html',
-            controller: 'LayoutsController'
+            controller: 'layoutController'
         });
         $routeProvider.when('/cargaInventario', {
             templateUrl: 'AngularJS/Templates/cargaInventario.html',
