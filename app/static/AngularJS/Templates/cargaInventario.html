@@ -67,7 +67,6 @@
                       <thead>
                           <tr>
                               <th>DESCRIPCIÓN</th>
-                              <th>DAÑADO</th>
                               <th>CANTIDAD RECIBIDA</th>
                               <th>CANTIDAD DAÑADOS</th>
                               <th>OBSERVACIONES</th>
@@ -76,10 +75,7 @@
                       </thead>
                       <tbody>
                           <tr ng-repeat="acce in Inv.detalle">
-                              <td>{{acce.caa_descripacce}}</td>
-                              <td>
-                                  <input type="checkbox" ng-model="acce.daniado">
-                              </td>
+                              <td>{{acce.caa_descripacce}}</td>                              
                               <td>
                                   <input type="number" min="0" class="form-control" ng-model="acce.cantRecibida">
                               </td>

@@ -2,6 +2,7 @@ registrationModule.controller('cargaInventarioController', function($scope, $roo
 
     $scope.Empresas = [];
     $scope.idEmpresa  = 0;
+    $scope.idDivision = 0;
     $scope.idSucursal = 0;
     $scope.Inv = {};
 
@@ -16,7 +17,6 @@ registrationModule.controller('cargaInventarioController', function($scope, $roo
     $scope.getEmpresas = function( idUsuario ){
         layoutRepository.getEmpresas( idUsuario ).then(function(result){
             $scope.Empresas = result.data;
-            console.log("Empresas", $scope.Empresas);
         }, function(error){
             console.log("Error", error);
         });
@@ -25,9 +25,13 @@ registrationModule.controller('cargaInventarioController', function($scope, $roo
     $scope.EmpresaSeleccionada = function(){
         if( $scope.indice == null  || $scope.indice == undefined ){
             $scope.idEmpresa = 0;
+            $scope.idDivision = 0;
         }
         else{
             $scope.idEmpresa = $scope.Empresas[ $scope.indice ].emp_idempresa;
+            $scope.idDivision = $scope.Empresas[ $scope.indice ].div_iddivision;
+            console.log("empresa", $scope.idEmpresa);
+            console.log("division", $scope.idDivision);
         }
     }
 
