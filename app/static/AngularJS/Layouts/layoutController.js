@@ -43,16 +43,16 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
     $scope.validaInputs = function(){
         console.log( $scope.idAnio );
         if( $scope.idEmpresa == 0 || $scope.idEmpresa === null ){
-            alert('No se ha seleccionado la empresa.');
+            swal('Layout','No se ha seleccionado la empresa.');
         }
         else if( $scope.idSucursal == 0 || $scope.idSucursal === null ){
-            alert('No se ha seleccionado la sucursal.');
+            swal('Layout','No se ha seleccionado la sucursal.');
         }
         else if( $scope.idModelo == '' || $scope.idModelo === null ){
-            alert('No se ha seleccionado el modelo.');
+            swal('Layout','No se ha seleccionado el modelo.');
         }
         else if( $scope.idAnio == '' || $scope.idAnio === null){
-            alert('No se ha seleccionado el año.');
+            swal('Layout','No se ha seleccionado el año.');
         }
         else{
             

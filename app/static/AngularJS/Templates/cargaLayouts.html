@@ -1,3 +1,25 @@
-<div ng-init="init()">
-  Carga de Layouts
+<div class="panel panel-default">
+  	<div class="panel-body">
+  		<div class="row">
+  			<div class="col-sm-12">
+  				Subir archivo
+  			</div>
+        </div>
+        
+        <div class="row">
+            <div class="col-sm-10">
+                <button 
+                    ng-show="Accesorios.length == 0"
+                    class="btn btn-primary pull-right" 
+                    ng-click="validaInputs();">
+                    <i class="glyphicon glyphicon-zoom-in"></i> Buscar Accesorios
+                </button>
+            </div>
+        </div>
+  	</div>
+  	<div class="panel-footer">
+  		<div class="row">
+  			<div class="col-xs-12"> </div>
+  		</div>
+  	</div>
 </div>
