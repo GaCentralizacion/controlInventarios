@@ -70,6 +70,27 @@ Layout.prototype.get_accesorios = function(req, res, next) {
     });
 }
 
+Layout.prototype.get_readLayout = function(req, res, next){
+    var self = this;
+    var parseXlsx = require('excel');
+
+    parseXlsx('1498228920253.xlsx', function(err, data) {
+        if(err){
+            self.view.expositor(res, {
+                error: err,
+                result: {success:false, msg:"Ocurrio un error al leer el archivo: " + err}
+            });
+            throw err;
+        };
+
+        // console.log( data );
+        self.view.expositor(res, {
+            error: false,
+            result: {success:false, msg:"", data: data}
+        });
+    });
+}
+
 Layout.prototype.get_create = function(req, res, next) {
     var self = this;
 
