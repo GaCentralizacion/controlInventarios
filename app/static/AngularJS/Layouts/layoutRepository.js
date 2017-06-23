@@ -24,11 +24,26 @@ registrationModule.factory('layoutRepository', function($http) {
                 }
             });
         },
-        generateLayout: function() {
+        getAccesorios: function( modelo, anio ) {
+            return $http({
+                url: layoutURL + 'accesorios/',
+                method: "GET",
+                params:{
+                    modelo: modelo,
+                    anio: anio
+                },
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+        },
+        generateLayout: function( json ) {
             return $http({
                 url: layoutURL + 'create/',
                 method: "GET",
-                params: {},
+                params: {
+                    jsonData: json
+                },
                 headers: {
                     'Content-Type': 'application/json'
                 }
