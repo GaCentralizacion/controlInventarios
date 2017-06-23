@@ -17,7 +17,43 @@ registrationModule.factory('cargaInventarioRepository', function($http) {
 
             });
         },
+        //  Encabezado  = { vin: STRING,
+        //                  idUsr: INT,
+        //                  iae_idinventacce: INT,
+        //                  idDivision: INT,
+        //                  idEmpresa: INT,
+        //                  idSucursal: INT,
+        //                  idDepartamento: INT,
+        //                  ObservacionesGrales: STRING,
+        //                  reclama: INT }
+        insertaEncabezadoInventario: function(Encabezado) {
+            return $http({
+                url: cargaInventarioURL + 'insEncabezadoInventario/',
+                method: "GET",
+                params: Encabezado,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
 
+            });
+        },
+        //  Accesorio = { idEncabezado: INT,
+        //                caa_idacce: INT,
+        //                recibidos: INT,
+        //                daniados: INT,
+        //                observaciones: STRING,
+        //                idEstadoAccesorio: INT }
+        insertaDetalleInventario: function(Accesorio) {
+            return $http({
+                url: cargaInventarioURL + 'insDetalleInventario/',
+                method: "GET",
+                params: Accesorio,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+
+            });
+        }
     };
 
 });

@@ -16,7 +16,7 @@ registrationModule.factory('loginRepository', function($http) {
                 }
 
             });
-        },
+        }
 
     };
 

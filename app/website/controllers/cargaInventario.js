@@ -20,6 +20,44 @@ var cargaInventario = function(conf) {
     };
 };
 
+cargaInventario.prototype.get_insEncabezadoInventario = function(req, res, next){
+    var self = this;
+
+    var params = [{name: 'vin', value: req.query.vin , type: self.model.types.STRING},
+                  {name: 'idUsr', value: req.query.idUsr , type: self.model.types.INT},
+                  {name: 'iae_idinventacce', value: req.query.iae_idinventacce , type: self.model.types.INT},
+                  {name: 'idDivision', value: req.query.idDivision , type: self.model.types.INT},
+                  {name: 'idEmpresa', value: req.query.idEmpresa , type: self.model.types.INT},
+                  {name: 'idSucursal', value: req.query.idSucursal , type: self.model.types.INT},
+                  {name: 'idDepartamento', value: req.query.idDepartamento , type: self.model.types.INT},
+                  {name: 'ObservacionesGrales', value: req.query.ObservacionesGrales , type: self.model.types.STRING},
+                  {name: 'reclama', value: req.query.reclama , type: self.model.types.INT}];
+
+    self.model.query('INS_ENCABEZADO_INVENTARIO_SP', params, function(error, result){
+        self.view.expositor(res, {
+            error: error,
+            result: result
+        });
+    });
+};
+
+cargaInventario.prototype.get_insDetalleInventario = function(req, res, next){
+    var self = this;
+
+    var params = [{name: 'idEncabezado', value: req.query.idEncabezado, type: self.model.types.INT},
+                  {name: 'caa_idacce', value: req.query.caa_idacce, type: self.model.types.INT},
+                  {name: 'recibidos', value: req.query.recibidos, type: self.model.types.INT},
+                  {name: 'daniados', value: req.query.daniados, type: self.model.types.INT},
+                  {name: 'observaciones', value: req.query.observaciones, type: self.model.types.STRING},
+                  {name: 'idEstadoAccesorio', value: req.query.idEstadoAccesorio, type: self.model.types.INT}];
+
+    self.model.query('INS_DETALLE_INVENTARIO_SP', params, function(error, result){
+        self.view.expositor(res, {
+            error: error,
+            result: result
+        });
+    });
+};
 
 cargaInventario.prototype.get_accesoriosInventarioByVin = function(req, res, next) {
 

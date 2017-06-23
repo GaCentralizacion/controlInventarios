@@ -63,7 +63,24 @@ registrationModule.controller('cargaInventarioController', function($scope, $roo
     }
 
     $scope.guardarInventario = function(){
-      console.log('Detalle', $scope.Inv);
+        // console.log('Detalle', $scope.Inv);
+      //  Encabezado  = { vin: 'unidad prueba',
+      //                  idUsr: 71,
+      //                  iae_idinventacce: 5,
+      //                  idDivision: 1,
+      //                  idEmpresa: 1,
+      //                  idSucursal: 3,
+      //                  idDepartamento: 1,
+      //                  ObservacionesGrales: 'prueba de parametros',
+      //                  reclama: 0 };
+       //
+      //   cargaInventarioRepository.insertaEncabezadoInventario(Encabezado).then(function(result){
+      //         if (result.data.length > 0){
+      //             console.log("id Encabezado: ", result.data[0].idEncabezadoInventario);
+      //         }
+      //   }, function(error){
+      //       console.log("Error", error);
+      //   });
     }
 
 });
