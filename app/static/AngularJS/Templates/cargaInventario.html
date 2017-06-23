@@ -7,14 +7,14 @@
                   <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                     <label class="font-noraml">EMPRESA</label>
                     <select class="form-control m-b" id="empresa" ng-model="indice" ng-change="EmpresaSeleccionada(indice);" ng-options="key as emp.emp_nombre for (key, emp) in Empresas">
-                        <option value=''>SELECCIONE...</option>
+                        <option value=''>- Seleccione Empresa -</option>
                     </select>
                   </div>
 
                   <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                     <label class="font-noraml">SUCURSAL</label>
                     <select class="form-control m-b" id="sucursal" ng-model="idSucursal" ng-options="suc.suc_idsucursal as suc.suc_nombre for suc in Empresas[indice].Sucursales">
-                        <option value='' >SELECCIONE...</option>
+                        <option value='' >- Seleccione Sucursal -</option>
                     </select>
                   </div>
 
@@ -35,7 +35,7 @@
           </div>
       	</div>
     </div>
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="MostrarInfo">
       <div class="panel panel-default">
         <div class="panel-body">
             <div class="row">
@@ -61,21 +61,21 @@
               </div>
             </div>
             <br/>
-            <div class="row">
+            <div class="row" ng-show="MostrarAccesorios">
               <div class="table-responsive">
                   <table class="table table-bordered table-hover ">
                       <thead>
                           <tr>
-                              <th>DESCRIPCIÓN</th>
-                              <th>CANTIDAD RECIBIDA</th>
-                              <th>CANTIDAD DAÑADOS</th>
-                              <th>OBSERVACIONES</th>
+                              <th>Descripción</th>
+                              <th>Cantidad Recibida</th>
+                              <th>Cantidad Dañados</th>
+                              <th>Observaciones</th>
                               <!-- <th>Eliminar</th> -->
                           </tr>
                       </thead>
                       <tbody>
                           <tr ng-repeat="acce in Inv.detalle">
-                              <td>{{acce.caa_descripacce}}</td>                              
+                              <td>{{acce.caa_descripacce}}</td>
                               <td>
                                   <input type="number" min="0" class="form-control" ng-model="acce.cantRecibida">
                               </td>
@@ -91,7 +91,7 @@
                   </table>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" ng-show="MostrarAccesorios">
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-right">
                 <label class="font-noraml">OBSERVACIONES</LABEL>
                 <input type="text" name="obsGrales" class="form-control" ng-model="Inv.Observaciones">
@@ -101,7 +101,7 @@
         <div class="panel-footer">
           <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-              <button class="btn btn-success pull-right" ng-click="guardarInventario()">Cargar Inventario</button>
+              <button class="btn btn-success pull-right" ng-click="guardarInventario()" ng-disabled="!MostrarAccesorios">Cargar Inventario</button>
             </div>
           </div>
         </div>
