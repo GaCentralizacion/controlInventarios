@@ -1,6 +1,5 @@
 var layoutURL = global_settings.urlCORS + 'api/layout/';
 
-
 registrationModule.factory('layoutRepository', function($http) {
     return {
         getEmpresas: function( idUsuario ) {
