@@ -71,9 +71,7 @@ cargaInventario.prototype.get_accesoriosInventarioByVin = function(req, res, nex
             var encabezado = result;
             var idinventacce = encabezado[0].iae_idinventacce;
 
-            var params2 = [{name: 'idempresa', value: req.query.idEmpresa, type: self.model.types.INT },
-                           {name: 'idsucursal', value: req.query.idSucursal, type: self.model.types.INT },
-                           {name: 'idinventacce', value: idinventacce, type: self.model.types.INT }];
+            var params2 = [{name: 'idinventacce', value: idinventacce, type: self.model.types.INT }];
 
             self.model.query('SEL_DETALLE_SP', params2, function(e, resultado) {
                 encabezado[0].detalle = resultado;
