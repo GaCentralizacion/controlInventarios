@@ -154,6 +154,7 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
     }
 
     $scope.validaLayout = function( key ){
+        console.log( 'Lave', key );
         // var key = 'c7a0fd6b564ae60b81846959bba54839';
         // var key = 'f67ab6f0593791373903f3834f4e190e1';
 
@@ -171,18 +172,18 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
                 $scope.Alert.color   = 'danger';
                 $scope.Alert.estatus = 'Error';
                 $scope.Alert.msg     = 'El Layout que proporcionó no contiene el formato original.';
-                $scope.Alert.acc     = false;
+                $scope.Alert.acc     = true;
                 $scope.Alert.btn     = 0; // Intentar con otro layout
             }
             else{
                 $scope.LayoutSuccess = true;
-                var errCabecera = [];
+                var errLayout = [];
                 // Validamos la empresa
                 if( String($scope.LayoutFile[7][0]) === $scope.Empresa.emp_nombre ){
                     console.log( 'Empresa válida' );
                 }
                 else{
-                    errCabecera.push( 'La empresa es incorrecta' );
+                    errLayout.push( 'La empresa es incorrecta, debe ser: ' + $scope.Empresa.emp_nombre );
                 }
 
                 // Validamos la Sucursal
@@ -190,7 +191,7 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
                     console.log( 'Sucursal válida' );
                 }
                 else{
-                    errCabecera.push( 'La sucursal es incorrecta' );
+                    errLayout.push( 'La sucursal es incorrecta, debe ser: ' + $scope.Sucursal.suc_nombre );
                 }
 
                 // Validamos la catalogo
@@ -198,7 +199,7 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
                     console.log( 'Catálogo válida' );
                 }
                 else{
-                    errCabecera.push( 'El catálogo es incorrecto' );
+                    errLayout.push( 'El catálogo es incorrecto, debe ser: ' + $scope.ModeloAnio.iae_idcatalogo );
                 }
 
                 // Validamos la Modelo
@@ -206,7 +207,7 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
                     console.log( 'Descripción del modelo válida' );
                 }
                 else{
-                    errCabecera.push( 'Descripción del modelo incorrecta' );
+                    errLayout.push( 'Descripción del modelo incorrecta, debe ser: ' + $scope.ModeloAnio.iae_modelo );
                 }
 
                 // Validamos la AñoModelo
@@ -214,21 +215,7 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
                     console.log( 'Año del modelo válido' );
                 }
                 else{
-                    errCabecera.push( 'Año del modelo incorrecto' );
-                }
-
-                // Verificamos mediante errCabecera si los valores de la cabecera no han sido midiciados
-                // el tamaño de la variable errCabecera debera valer 0 para garantizar que todos los puntos los ha pasado satisfactoriamente
-                if( errCabecera.length != 0 ){
-                    $scope.Alert.color   = 'warning';
-                    $scope.Alert.estatus = 'Advertancia';
-                    $scope.Alert.msg     = 'Se han presentado las siguientes Observaciones al momento de validar el Layout:';
-                    $scope.Alert.err     = errCabecera;
-                    $scope.Alert.acc     = false;
-                    $scope.Alert.btn     = 0; // Intentar con otro layout
-                }
-                else{
-
+                    errLayout.push( 'Año del modelo incorrecto, debe ser: ' + $scope.ModeloAnio.iae_anomodelo );
                 }
 
                 // Validamos que los accesorios sean correctos
@@ -246,7 +233,28 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
 
                 // Validamos que la suma de los accesorios sea diferente de 0 de lo contrario el Layout esta vacío
                 // Se pasara a criterio del usuario si va a cargar un inventario en 0´s
-                console.log( sumatoria );
+                if( sumatoria == 0 ){
+                    errLayout.push( 'El Layout que proporciona tiene las cantidades en ceros' );
+                }
+
+                // Verificamos mediante errLayout si los valores de la cabecera no han sido midiciados
+                // el tamaño de la variable errLayout debera valer 0 para garantizar que todos los puntos los ha pasado satisfactoriamente
+                if( errLayout.length != 0 ){
+                    $scope.Alert.color   = 'warning';
+                    $scope.Alert.estatus = 'Advertancia';
+                    $scope.Alert.msg     = 'Se han presentado las siguientes Observaciones al momento de validar el Layout:';
+                    $scope.Alert.err     = errLayout;
+                    $scope.Alert.acc     = true;
+                    $scope.Alert.btn     = 0; // 1 Guardar de todos modos
+                }
+                else{
+                    $scope.Alert.color   = 'success';
+                    $scope.Alert.estatus = 'Datos Validados';
+                    $scope.Alert.msg     = 'Los datos del Layout proporcionado fueron validados correctamente.';
+                    $scope.Alert.err     = errLayout;
+                    $scope.Alert.acc     = true;
+                    $scope.Alert.btn     = 2; // Guardar de todos modos
+                }
 
                 // Validamos que el VIN proporcionado por el Layout sea correcto, tenga accesorios y/o pertenezca al modelo especificado.
                 var idEmpresa  = $scope.Empresa.emp_idempresa;
@@ -254,19 +262,37 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
                 var VIN        = $scope.LayoutFile[10][0];
                 cargaInventarioRepository.getAccesoriosInventarioByVin( idEmpresa, idSucursal, VIN ).then(function(result){
                     $scope.VIN = result.data[0];
+                    var errLayout = [];
 
                     if( $scope.VIN === undefined ){
-                        console.warn( 'VIN '+ VIN +' no encontrado en base de datos' );
+                        $scope.Alert.color   = 'danger';
+                        $scope.Alert.estatus = 'No existe VIN';
+                        $scope.Alert.msg     = 'VIN '+ VIN +' no encontrado en base de datos, solicite verificar este campo.';
+                        $scope.Alert.acc     = true;
+                        $scope.Alert.btn     = 0; // Intentar con otro layout
                     }
                     else{
                         if( $scope.VIN.anioModelo === null && $scope.VIN.catalogo === null && $scope.VIN.modelo === null ){
-                            console.warn( 'El VIN que proporciona no cuenta con un catalogo de Accesorios' );
+                            $scope.Alert.color   = 'danger';
+                            $scope.Alert.estatus = 'Sin catálogo';
+                            $scope.Alert.msg     = 'El VIN que proporciona no cuenta con un catalogo de Accesorios';
+                            $scope.Alert.acc     = true;
+                            $scope.Alert.btn     = 0; // Intentar con otro layout
                         }
                         else if( ( parseInt( $scope.VIN.anioModelo ) != parseInt( $scope.ModeloAnio.iae_anomodelo ) )
                             || ( $scope.VIN.catalogo != $scope.ModeloAnio.iae_idcatalogo )
                             || ( $scope.VIN.modelo != $scope.ModeloAnio.iae_modelo ) ){
-                            console.warn( 'El VIN ' + $scope.VIN.vin + ' pertenece a un modelo distinto al Layout:' );
-                            console.warn( $scope.VIN.modelo + ' ' + $scope.VIN.anioModelo );
+
+                            errLayout.push( 'CATÁLOGO: ' + $scope.VIN.catalogo );
+                            errLayout.push( 'MODELO: ' + $scope.VIN.modelo );
+                            errLayout.push( 'AÑO MODELO: ' + $scope.VIN.anioModelo );
+                            
+                            $scope.Alert.color   = 'danger';
+                            $scope.Alert.estatus = 'Advertencia';
+                            $scope.Alert.msg     = 'El VIN ' + $scope.VIN.vin + ' pertenece a un modelo distinto al Layout:';
+                            $scope.Alert.acc     = true;
+                            $scope.Alert.err     = errLayout;
+                            $scope.Alert.btn     = 0; // Intentar con otro layout
                         }
                     }
                 }, function(error){
