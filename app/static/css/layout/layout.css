@@ -1,0 +1,49 @@
+.tbl-layout{
+	width: 100%;
+	margin-top: 60px;
+}
+
+.tbl-layout .titulo{
+	font-size: 22px;
+	font-weight: bold;
+	color: #333 !important;
+	text-align: center;
+	padding-bottom: 20px;
+}
+
+.tbl-layout .etiqueta{
+	font-size: 11px;
+	font-weight: bold;
+	color: #333 !important;
+	padding-left: 5px;
+}
+
+.tbl-layout .valor{
+	font-size: 16px;
+	color: white !important;
+	background-color: #203764;
+	padding: 5px;
+}
+
+.tbl-layout .accesorios{
+	width: 100%;
+}
+
+.tbl-layout .accesorios tr td{
+	border:solid 1px black;
+	padding: 5px;
+}
+
+.tbl-layout .th{
+	font-weight: bold;
+	color: #333;
+}
+
+.tbl-layout .tval{
+	color: #333;
+}
+
+.tbl-layout .observaciones{
+	width: 100%;
+	margin-top: 30px;
+}

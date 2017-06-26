@@ -133,6 +133,7 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
             var filename = res.filename + '.xlsx';
             $scope.readLayout( filename );
 
+            $(".row_dropzone").hide();
         });
         
     }
@@ -140,11 +141,11 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
     $scope.readLayout = function( filename ){
         layoutRepository.readLayout( filename ).then(function(result){
             var LayoutFile = result.data.data;
+            console.log( LayoutFile );
             $scope.LayoutFile = LayoutFile;
 
             var key = LayoutFile[0][5];
 
-            console.log( key );
             $scope.validaLayout( key );
         }, function(error){
             console.log("Error", error);
@@ -153,7 +154,7 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
 
     $scope.validaLayout = function( key ){
         // var key = 'c7a0fd6b564ae60b81846959bba54839';
-        var key = 'f67ab6f0593791373903f3834f4e190e';
+        // var key = 'f67ab6f0593791373903f3834f4e190e';
 
         layoutRepository.validaLayout( key ).then(function(result){
             var Info = result.data;
@@ -163,9 +164,24 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
             $scope.ModeloAnio  = Info[3];
             $scope.Accesorios  = Info[4];
 
+            var inicio = 17;
+            $scope.Accesorios.forEach( function( item, key ){
+                $scope.Accesorios[ key ].recibida      = $scope.LayoutFile[ inicio ][2] == '' ? 0 : $scope.LayoutFile[ inicio ][2];
+                $scope.Accesorios[ key ].daniada       = $scope.LayoutFile[ inicio ][3] == '' ? 0 : $scope.LayoutFile[ inicio ][3];
+                $scope.Accesorios[ key ].observaciones = $scope.LayoutFile[ inicio ][4];
+
+                inicio++;
+            });
+
+            $scope.observaciones = $scope.LayoutFile[ ( inicio + 2 ) ][2];
+
             console.log( Info );
         }, function(error){
             console.log("Error", error);
         });
+    }
+
+    $scope.cancelarInventario = function(){
+        location.reload();
     }
 });
