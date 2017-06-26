@@ -27,7 +27,7 @@
   							<td colspan="2" class="etiqueta">SUCURSAL</td>
   						</tr>
   						<tr>
-  							<td colspan="2" class="valor">{{ LayoutFile[7][0] }}</td>
+  							<td colspan="2" class="valor" ng-bind-html="LayoutFile[7][0]"></td>
   							<td></td>
   							<td></td>
   							<td colspan="2" class="valor">{{ LayoutFile[7][4] }}</td>
@@ -105,7 +105,7 @@
   			<div class="col-sm-1"></div>
   			<div class="col-sm-10">
   				<div class="alert alert-{{ Alert.color }}">
-				  	<strong>¡{{ Alert.estatus }}!</strong> {{ Alert.msg }}
+				  	<strong style="font-size: 18px;">¡{{ Alert.estatus }}!</strong> <div>{{Alert.msg}}</div> <ul > <li ng-repeat="err in Alert.err">{{ err }}</li> </ul>
 				</div>
   			</div>
   		</div>
