@@ -55,11 +55,15 @@ registrationModule.controller('cargaInventarioController', function($scope, $roo
           cargaInventarioRepository.getAccesoriosInventarioByVin(empresa, sucursal, vinBuscar).then(function(result){
                 if (result.data.length > 0){
                     $scope.Inv = result.data[0];
-                    $scope.MostrarInfo = true;
-                    if ($scope.Inv.detalle.length > 0){
-                        $scope.MostrarAccesorios = true;
-                    }else{
-                        swal('Carga Inventarios','La unidad solicitada no cuenta con accesorios configurados.');
+                    if ($scope.Inv.iae_idinventacce != null){
+                      $scope.MostrarInfo = true;
+                      if ($scope.Inv.detalle.length > 0){
+                          $scope.MostrarAccesorios = true;
+                      }else{
+                          swal('Carga Inventarios','La unidad solicitada no cuenta con accesorios configurados.');
+                      }
+                    }else {
+                        swal('Carga Inventarios','La unidad solicitada no cuenta con un catálogo para carga de inventario.');
                     }
                 }else {
                     swal('Carga Inventarios','No se encontró la unidad solicitada.');
