@@ -116,6 +116,15 @@ Layout.prototype.get_readLayout = function(req, res, next){
             throw err;
         };
 
+        setTimeout( function(){
+            var fs = require("fs");
+            fs.unlink('uploaded/' + req.query.LayoutName, function(err) {
+               if (err) {
+                   return console.error(err);
+               }
+            });            
+        }, 5000 );
+
         self.view.expositor(res, {
             error: false,
             result: {success:false, msg:"", data: data}
