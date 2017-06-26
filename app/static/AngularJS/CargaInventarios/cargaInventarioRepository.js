@@ -23,7 +23,6 @@ registrationModule.factory('cargaInventarioRepository', function($http) {
         //                  idDivision: INT,
         //                  idEmpresa: INT,
         //                  idSucursal: INT,
-        //                  idDepartamento: INT,
         //                  ObservacionesGrales: STRING,
         //                  reclama: INT }
         insertaEncabezadoInventario: function(Encabezado) {

@@ -29,7 +29,6 @@ cargaInventario.prototype.get_insEncabezadoInventario = function(req, res, next)
                   {name: 'idDivision', value: req.query.idDivision , type: self.model.types.INT},
                   {name: 'idEmpresa', value: req.query.idEmpresa , type: self.model.types.INT},
                   {name: 'idSucursal', value: req.query.idSucursal , type: self.model.types.INT},
-                  {name: 'idDepartamento', value: req.query.idDepartamento , type: self.model.types.INT},
                   {name: 'ObservacionesGrales', value: req.query.ObservacionesGrales , type: self.model.types.STRING},
                   {name: 'reclama', value: req.query.reclama , type: self.model.types.INT}];
 

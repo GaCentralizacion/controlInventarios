@@ -104,7 +104,6 @@ registrationModule.controller('cargaInventarioController', function($scope, $roo
                            idDivision: $scope.idDivision,
                            idEmpresa: $scope.idEmpresa,
                            idSucursal: $scope.idSucursal,
-                           idDepartamento: 1,
                            ObservacionesGrales: obsGrales,
                            reclama: invReclama };
 
