@@ -8,6 +8,7 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
     $scope.key           = '';
     $scope.Alert         = [];
     $scope.LayoutSuccess = false;
+    $scope.btnDisabled   = false;
     $scope.json          = [];
 
     $scope.Empresas      = [];
@@ -119,20 +120,11 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
 
     var myDropzone
     $scope.Dropzone = function(){
-        myDropzone = new Dropzone("#idDropzone", { url: "/api/layout/upload/"});
-        myDropzone.options.myAwesomeDropzone = {
-            paramName: "file", // The name that will be used to transfer the file
-            maxFilesize: 10, // MB
-            addRemoveLinks: true, 
-            uploadMultiple: false,
-            maxFiles:1,
-            accept: function(file, done) {
-                if (file.name == "justinbieber.jpg") {
-                    done("Naha, you don't.");
-                }
-                else { done(); }
-            }
-        };
+        myDropzone = new Dropzone("#idDropzone", { 
+            url: "/api/layout/upload/",
+            uploadMultiple: 0,
+            acceptedFiles: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        });
 
         myDropzone.on("success", function(req, res) {
             var filename = res.filename + '.xlsx';
@@ -157,7 +149,6 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
     }
 
     $scope.validaLayout = function( key ){
-        console.log( 'Lave', key );
         // var key = 'c7a0fd6b564ae60b81846959bba54839';
         // var key = 'f67ab6f0593791373903f3834f4e190e1';
 
@@ -168,8 +159,6 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
             $scope.Sucursal    = Info[2][0];
             $scope.ModeloAnio  = Info[3][0];
             $scope.Accesorios  = Info[4];
-
-            console.log( Info );
 
             if( $scope.Layout === undefined ){
                 $scope.Alert.color   = 'danger';
@@ -226,7 +215,6 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
                 var sumatoria = 0;
                 $scope.reclama = 0;
                 $scope.Accesorios.forEach( function( item, key ){
-                    console.log( item );
                     $scope.Accesorios[ key ].recibida      = $scope.LayoutFile[ inicio ][2] == '' ? 0 : $scope.LayoutFile[ inicio ][2];
                     $scope.Accesorios[ key ].daniada       = $scope.LayoutFile[ inicio ][3] == '' ? 0 : $scope.LayoutFile[ inicio ][3];
                     $scope.Accesorios[ key ].observaciones = $scope.LayoutFile[ inicio ][4];
@@ -350,17 +338,50 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
     }
 
     $scope.guardarInventario = function(){
+        $scope.btnDisabled   = true;
         var Encabezado  = { vin: $scope.VIN.vin,
                            idUsr: $scope.userData.idUsr,
                            iae_idinventacce: $scope.VIN.iae_idinventacce,
                            idDivision: $scope.Empresa.div_iddivision,
                            idEmpresa:  $scope.Empresa.emp_idempresa,
                            idSucursal: $scope.Sucursal.suc_idsucursal,
-                           ObservacionesGrales: $scope.observaciones,
+                           ObservacionesGrales: $scope.observaciones.toUpperCase(),
                            reclama: $scope.reclama
                        };
 
-        console.log( Encabezado );
+        cargaInventarioRepository.insertaEncabezadoInventario(Encabezado).then(function(result){
+            if (result.data.length > 0){
+                var idEncabezado =  result.data[0].idEncabezadoInventario;
+                $scope.idsDetalle = [];
+                $scope.Accesorios.forEach( function( item, key ){
+                    var Accesorio = { idEncabezado: idEncabezado,
+                                       caa_idacce: item.caa_idacce[0],
+                                       recibidos: parseInt( item.recibida ),
+                                       daniados: parseInt( item.daniada ),
+                                       observaciones: item.observaciones.toUpperCase(),
+                                       idEstadoAccesorio: item.estatus };
+                
+                    cargaInventarioRepository.insertaDetalleInventario(Accesorio).then(function(result){
+                        $scope.idsDetalle.push(result.data[0].idDetalleInventario);
+                        if( key >= ( $scope.Accesorios.length - 1 ) ){
+                            swal('Carga Inventarios','Se cargado correctamente el Layout con el id: ' + idEncabezado);
+                            setTimeout( function(){
+                                location.reload();
+                            },3000 );
+                        }
+                    }, function(error){
+                        console.log("Error", error);
+                    });
+
+                });
+
+                console.log( "Id Encabezado", idEncabezado );
+                console.log( "Ids Detalles", JSON.stringify( $scope.idsDetalle ) );
+            }
+        }, function(error){
+            swal('Carga Inventarios','No se pudo guardar su inventario.');
+            console.log("Error", error);
+        });        
     }
 
     $scope.cancelarInventario = function(){

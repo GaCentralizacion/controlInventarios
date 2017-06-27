@@ -6,7 +6,7 @@
             <div class="col-sm-10" ng-init="Dropzone();">
                 <form action="/file-upload" class="dropzone" id="idDropzone">
                     <div class="fallback">
-                        <input name="file" type="file" accept="*/xlsx" />
+                        <input name="file" type="file" accept="text/csv, .csv"/>
                     </div>
                 </form>
             </div>
@@ -144,6 +144,7 @@
                 <button 
                     style="margin-left: 10px" 
                     ng-click="guardarInventario();"
+                    ng-disabled="btnDisabled"
                     class="btn btn-success pull-right" >
                 	<i class="glyphicon glyphicon-floppy-saved"></i> Guardar Inventario
                 </button>
@@ -186,17 +187,17 @@
                 <button 
                     class="btn btn-info pull-right" 
                     ng-click="validaLayout();">
-                <i class="glyphicon glyphicon-zoom-in"></i> Valida Layout
+                    <i class="glyphicon glyphicon-zoom-in"></i> Valida Layout
                 </button>
                 <button 
                     class="btn btn-success pull-right" 
                     ng-click="readLayout();">
-                <i class="glyphicon glyphicon-zoom-in"></i> Leer Layout
+                    <i class="glyphicon glyphicon-zoom-in"></i> Leer Layout
                 </button>
                 <button 
                     class="btn btn-danger pull-right" 
                     ng-click="LimpiarDrope();">
-                <i class="glyphicon glyphicon-zoom-in"></i> Leer Layout
+                    <i class="glyphicon glyphicon-zoom-in"></i> Leer Layout
                 </button>
                 <!-- <button 
                     ng-show="Accesorios.length == 0"
