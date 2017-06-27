@@ -259,6 +259,8 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
 
                     sumatoria += parseInt( $scope.Accesorios[ key ].recibida );
                     sumatoria += parseInt( $scope.Accesorios[ key ].daniada );
+                    if( parseInt( $scope.Accesorios[ key ].daniada ) > parseInt( $scope.Accesorios[ key ].recibida ) )
+                        errLayout.push( 'Las cantidades dañadas superan a las recibidas en el accesorio ' + $scope.Accesorios[ key ].caa_descripacce );
                     inicio++;
                 });
 
@@ -272,7 +274,7 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
                 // el tamaño de la variable errLayout debera valer 0 para garantizar que todos los puntos los ha pasado satisfactoriamente
                 if( errLayout.length != 0 ){
                     $scope.Alert.color   = 'warning';
-                    $scope.Alert.estatus = 'Advertancia';
+                    $scope.Alert.estatus = 'Advertencia';
                     $scope.Alert.msg     = 'Se han presentado las siguientes Observaciones al momento de validar el Layout:';
                     $scope.Alert.err     = errLayout;
                     $scope.Alert.acc     = true;
@@ -363,8 +365,19 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
                 
                     cargaInventarioRepository.insertaDetalleInventario(Accesorio).then(function(result){
                         $scope.idsDetalle.push(result.data[0].idDetalleInventario);
+
                         if( key >= ( $scope.Accesorios.length - 1 ) ){
-                            swal('Carga Inventarios','Se cargado correctamente el Layout con el id: ' + idEncabezado);
+                            if( $scope.idsDetalle.length == $scope.Accesorios.length ){
+                                swal('Carga Inventarios','Se cargado correctamente el Layout con el id: ' + idEncabezado);
+                            }
+                            else{
+                                // cargaInventarioRepository.eliminaInventario(idEncabezado)
+                                cargaInventarioRepository.eliminaInventario(idEncabezado).then(function(result){
+                                    swal('Error en la Carga de Inventario','Se presento un error al guardar en al menos uno de los accesorios y la carga no ha sido procesada.');
+                                }, function(error){
+                                    console.log("Error", error);
+                                });
+                            }
                             setTimeout( function(){
                                 location.reload();
                             },3000 );
@@ -372,11 +385,7 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
                     }, function(error){
                         console.log("Error", error);
                     });
-
                 });
-
-                console.log( "Id Encabezado", idEncabezado );
-                console.log( "Ids Detalles", JSON.stringify( $scope.idsDetalle ) );
             }
         }, function(error){
             swal('Carga Inventarios','No se pudo guardar su inventario.');
