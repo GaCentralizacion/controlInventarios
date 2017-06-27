@@ -6,21 +6,21 @@
             <div class="row">
                   <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                     <label class="font-noraml">EMPRESA</label>
-                    <select class="form-control m-b" id="empresa" ng-model="indice" ng-change="EmpresaSeleccionada(indice);" ng-options="key as emp.emp_nombre for (key, emp) in Empresas">
+                    <select class="form-control m-b" id="empresa" ng-model="indice" ng-change="EmpresaSeleccionada(indice);CambiaBusqueda();" ng-options="key as emp.emp_nombre for (key, emp) in Empresas">
                         <option value=''>- Seleccione Empresa -</option>
                     </select>
                   </div>
 
                   <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                     <label class="font-noraml">SUCURSAL</label>
-                    <select class="form-control m-b" id="sucursal" ng-model="idSucursal" ng-options="suc.suc_idsucursal as suc.suc_nombre for suc in Empresas[indice].Sucursales">
+                    <select class="form-control m-b" id="sucursal" ng-model="idSucursal" ng-change="CambiaBusqueda();" ng-options="suc.suc_idsucursal as suc.suc_nombre for suc in Empresas[indice].Sucursales">
                         <option value='' >- Seleccione Sucursal -</option>
                     </select>
                   </div>
 
                   <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
             				<label class="font-noraml">VIN</LABEL>
-            				<input type="text" name="vin" class="form-control" ng-model="vin">
+            				<input type="text" name="vin" class="form-control" ng-change="CambiaBusqueda();" ng-model="vin">
             			</div>
               </div>
         </div>
