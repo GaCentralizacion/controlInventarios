@@ -1,5 +1,6 @@
-registrationModule.controller('layoutController', function($scope, $rootScope, $location, alertFactory, layoutRepository, cargaInventarioRepository, filterFilter, md5) {
-    $scope.idUsuario     = 71; // 1, 71
+registrationModule.controller('layoutController', function($scope, $rootScope, $location, userFactory, alertFactory, layoutRepository, cargaInventarioRepository, filterFilter, md5) {
+    $scope.userData      = userFactory.getUserData();
+    $scope.idUsuario     = $scope.userData.idUsr; // 1, 71
     $scope.idEmpresa     = 0;
     $scope.idSucursal    = 0;
     $scope.idModelo      = '';
@@ -17,6 +18,8 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
 
 
     $scope.init = function() {
+        userFactory.ValidaSesion();
+        
         $scope.getEmpresas( $scope.idUsuario );
         $scope.getAnioModelo(); 
     }
@@ -166,7 +169,7 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
             $scope.ModeloAnio  = Info[3][0];
             $scope.Accesorios  = Info[4];
 
-            // console.log( Info );
+            console.log( Info );
 
             if( $scope.Layout === undefined ){
                 $scope.Alert.color   = 'danger';
@@ -221,10 +224,50 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
                 // Validamos que los accesorios sean correctos
                 var inicio    = 17;
                 var sumatoria = 0;
+                $scope.reclama = 0;
                 $scope.Accesorios.forEach( function( item, key ){
+                    console.log( item );
                     $scope.Accesorios[ key ].recibida      = $scope.LayoutFile[ inicio ][2] == '' ? 0 : $scope.LayoutFile[ inicio ][2];
                     $scope.Accesorios[ key ].daniada       = $scope.LayoutFile[ inicio ][3] == '' ? 0 : $scope.LayoutFile[ inicio ][3];
                     $scope.Accesorios[ key ].observaciones = $scope.LayoutFile[ inicio ][4];
+
+                    // Validamos el estatus de reclamacion 
+                    if( $scope.Accesorios[ key ].recibida != item.iad_cantdefault ){
+                        $scope.reclama = 1;
+                    }
+
+                    // Validamos los estatus de cada partida
+                    var totalAccePartida = 0;
+                    totalAccePartida = parseInt( $scope.Accesorios[ key ].recibida ) + parseInt( $scope.Accesorios[ key ].daniada );
+
+                    if( parseInt( $scope.Accesorios[ key ].daniada ) == 0 ){
+                        if( parseInt( $scope.Accesorios[ key ].recibida ) == item.iad_cantdefault ){
+                            $scope.Accesorios[ key ].lblestatus = 'OK'; // 1
+                            $scope.Accesorios[ key ].estatus = 1; // 1
+                        }
+                        else if( parseInt( $scope.Accesorios[ key ].recibida ) < item.iad_cantdefault  ){
+                            $scope.Accesorios[ key ].lblestatus = 'FALTANTE'; // 2
+                            $scope.Accesorios[ key ].estatus = 2; // 2
+                        }
+                        else{
+                            $scope.Accesorios[ key ].lblestatus = 'EXCEDENTE'; // 4
+                            $scope.Accesorios[ key ].estatus = 4; // 4
+                        }
+                    }
+                    else{
+                        if( parseInt( $scope.Accesorios[ key ].recibida ) == item.iad_cantdefault ){
+                            $scope.Accesorios[ key ].lblestatus = 'DAÑADA'; // 3
+                            $scope.Accesorios[ key ].estatus = 3; // 3
+                        }
+                        else if( parseInt( $scope.Accesorios[ key ].recibida ) < item.iad_cantdefault  ){
+                            $scope.Accesorios[ key ].lblestatus = 'DAÑADA FALTANTE'; // 6
+                            $scope.Accesorios[ key ].estatus = 6; // 6
+                        }
+                        else{
+                            $scope.Accesorios[ key ].lblestatus = 'DAÑADA EXCEDENTE'; // 5
+                            $scope.Accesorios[ key ].estatus = 5; // 5
+                        }
+                    }
 
                     sumatoria += parseInt( $scope.Accesorios[ key ].recibida );
                     sumatoria += parseInt( $scope.Accesorios[ key ].daniada );
@@ -304,6 +347,20 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
         }, function(error){
             console.log("Error", error);
         });
+    }
+
+    $scope.guardarInventario = function(){
+        var Encabezado  = { vin: $scope.VIN.vin,
+                           idUsr: $scope.userData.idUsr,
+                           iae_idinventacce: $scope.VIN.iae_idinventacce,
+                           idDivision: $scope.Empresa.div_iddivision,
+                           idEmpresa:  $scope.Empresa.emp_idempresa,
+                           idSucursal: $scope.Sucursal.suc_idsucursal,
+                           ObservacionesGrales: $scope.observaciones,
+                           reclama: $scope.reclama
+                       };
+
+        console.log( Encabezado );
     }
 
     $scope.cancelarInventario = function(){

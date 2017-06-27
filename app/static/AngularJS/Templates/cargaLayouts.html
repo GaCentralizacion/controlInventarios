@@ -1,218 +1,215 @@
 <link rel="stylesheet" type="text/css" href="css/layout/layout.css">
 <div class="panel panel-default">
-  	<div class="panel-body">
-  		<div class="row row_dropzone">
-  			<div class="col-sm-1"></div>
-  			<div class="col-sm-10" ng-init="Dropzone();">
-  				<form action="/file-upload" class="dropzone" id="idDropzone">
-				  	<div class="fallback">
-				    	<input name="file" type="file" accept="*/xlsx" />
-				  	</div>
-				</form>
-  			</div>	
-  		</div>
-
-  		<div class="row" ng-show="LayoutSuccess">
-  			<div class="col-sm-1"></div>
-  			<div class="col-sm-10">
-  				<table class="tbl-layout">
-  					<head>
-  						<tr>
-  							<td colspan="6" class="titulo">Inventario de Accesorios</td>
-  						</tr>
-  						<tr>
-  							<td colspan="2" class="etiqueta">EMPRESA</td>
-  							<td></td>
-  							<td></td>
-  							<td colspan="2" class="etiqueta">SUCURSAL</td>
-  						</tr>
-  						<tr>
-  							<td colspan="2" class="valor">{{ LayoutFile[7][0] }}</td>
-  							<td></td>
-  							<td></td>
-  							<td colspan="2" class="valor">{{ LayoutFile[7][4] }}</td>
-  						</tr>
-  						<tr> <td colspan="6">&nbsp;</td> </tr>
-  						<tr>
-  							<td class="etiqueta">VIN</td>
-  							<td colspan="2" class="etiqueta">CATÁLOGO</td>
-  							<td colspan="2" class="etiqueta">DESCRIPCIÓN</td>
-  							<td class="etiqueta">AÑO MODELO</td>
-  						</tr>
-  						<tr>
-  							<td class="valor">{{ LayoutFile[10][0] }}</td>
-  							<td colspan="2" class="valor">{{ LayoutFile[10][1] }}</td>
-  							<td colspan="2" class="valor">{{ LayoutFile[10][3] }}</td>
-  							<td class="valor">{{ LayoutFile[10][5] }}</td>
-  						</tr>
-  						<tr> <td colspan="6">&nbsp;</td> </tr>
-  						<tr>
-  							<td class="etiqueta">FOLIO DE REVISIÓN</td>
-  							<td colspan="2" class="etiqueta">FECHA / HORA DE LEVANTAMIENTO</td>
-  							<td colspan="2" class="etiqueta">&nbsp;</td>
-  							<td class="etiqueta">USUARIO</td>
-  						</tr>
-  						<tr>
-  							<td class="valor">{{ LayoutFile[13][0] }}</td>
-  							<td colspan="2" class="valor">{{ LayoutFile[13][1] }}</td>
-  							<td colspan="2" class="valor">&nbsp;</td>
-  							<td class="valor">{{ LayoutFile[13][5] }}</td>
-  						</tr>
-  						<tr> <td colspan="6">&nbsp;</td> </tr>
-  						<tr> <td colspan="6">&nbsp;</td> </tr>
-  					</head>
-  					<tbody>
-  						<tr>
-  							<td colspan="6">
-  								<table class="accesorios" ng-show="Alert.acc">
-  									<tr>
-			  							<td class="th">No</td>
-			  							<td class="th">DESCRIPCIÓN HERRAMIENTA</td>
-			  							<td class="th">CANTIDAD RECIBIDA</td>
-			  							<td class="th">CANTIDAD DAÑADA</td>
-			  							<td colspan="2" class="th">OBSERVACIONES</td>
-			  						</tr>
-
-			  						<tr ng-repeat="(key, acc) in Accesorios">
-			  							<td class="tval">{{ key + 1 }}</td>
-			  							<td class="tval">{{ acc.caa_descripacce }}</td>
-			  							<td class="tval">{{ acc.recibida }}</td>
-			  							<td class="tval">{{ acc.daniada }}</td>
-			  							<td colspan="2" class="tval">{{ acc.observaciones }}</td>
-			  						</tr>		
-  								</table>
-  							</td>
-  						</tr>
-  					</tbody>
-  					<tfoot>
-  						<tr>
-  							<td colspan="6">
-  								<table class="observaciones">
-			  						<tr>
-			  							<td class="etiqueta" width="25%">OBSERVACIONES GENERALES</td>
-			  							<td class="valor">{{ observaciones }}</td>
-			  						</tr>
-			  					</table>
-			  				</td>
-			  			</tr>
-  					</tfoot>
-  				</table>
-  			</div>
-  		</div>
-
-  		<br><br>
-  		<div class="row" ng-show="LayoutFile.length != 0">
-  			<div class="col-sm-1"></div>
-  			<div class="col-sm-10">
-  				<div class="alert alert-{{ Alert.color }}">
-				  	<strong style="font-size: 18px;">¡{{ Alert.estatus }}!</strong> <div>{{Alert.msg}}</div> <ul > <li ng-repeat="err in Alert.err">{{ err }}</li> </ul>
-				</div>
-  			</div>
-  		</div>
-
-  		<div class="row" ng-show="LayoutFile.length != 0">
-  			<div class="col-sm-1"></div>
-  			<div class="col-sm-10" ng-show="Alert.btn == 0">
-  				<button  
-                	ng-click="cancelarInventario();"
+    <div class="panel-body">
+        <div class="row row_dropzone">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-10" ng-init="Dropzone();">
+                <form action="/file-upload" class="dropzone" id="idDropzone">
+                    <div class="fallback">
+                        <input name="file" type="file" accept="*/xlsx" />
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row" ng-show="LayoutSuccess">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-10">
+                <table class="tbl-layout">
+                    <head>
+                        <tr>
+                            <td colspan="6" class="titulo">Inventario de Accesorios</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="etiqueta">EMPRESA</td>
+                            <td></td>
+                            <td></td>
+                            <td colspan="2" class="etiqueta">SUCURSAL</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="valor">{{ LayoutFile[7][0] }}</td>
+                            <td></td>
+                            <td></td>
+                            <td colspan="2" class="valor">{{ LayoutFile[7][4] }}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td class="etiqueta">VIN</td>
+                            <td colspan="2" class="etiqueta">CATÁLOGO</td>
+                            <td colspan="2" class="etiqueta">DESCRIPCIÓN</td>
+                            <td class="etiqueta">AÑO MODELO</td>
+                        </tr>
+                        <tr>
+                            <td class="valor">{{ LayoutFile[10][0] }}</td>
+                            <td colspan="2" class="valor">{{ LayoutFile[10][1] }}</td>
+                            <td colspan="2" class="valor">{{ LayoutFile[10][3] }}</td>
+                            <td class="valor">{{ LayoutFile[10][5] }}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td class="etiqueta">FOLIO DE REVISIÓN</td>
+                            <td colspan="2" class="etiqueta">FECHA / HORA DE LEVANTAMIENTO</td>
+                            <td colspan="2" class="etiqueta">&nbsp;</td>
+                            <td class="etiqueta">USUARIO</td>
+                        </tr>
+                        <tr>
+                            <td class="valor">{{ LayoutFile[13][0] }}</td>
+                            <td colspan="2" class="valor">{{ LayoutFile[13][1] }}</td>
+                            <td colspan="2" class="valor">&nbsp;</td>
+                            <td class="valor">{{ LayoutFile[13][5] }}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">&nbsp;</td>
+                        </tr>
+                    </head>
+                    <tbody>
+                        <tr>
+                            <td colspan="6">
+                                <table class="accesorios" ng-show="Alert.acc">
+                                    <tr>
+                                        <td class="th">No</td>
+                                        <td class="th">DESCRIPCIÓN HERRAMIENTA</td>
+                                        <td class="th">CANTIDAD RECIBIDA</td>
+                                        <td class="th">CANTIDAD DAÑADA</td>
+                                        <td colspan="2" class="th">OBSERVACIONES</td>
+                                    </tr>
+                                    <tr ng-repeat="(key, acc) in Accesorios">
+                                        <td class="tval">{{ key + 1 }}</td>
+                                        <td class="tval">{{ acc.caa_descripacce }}</td>
+                                        <td class="tval">{{ acc.recibida }}</td>
+                                        <td class="tval">{{ acc.daniada }}</td>
+                                        <td colspan="2" class="tval">{{ acc.observaciones }} {{ acc.lblestatus }}</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="6">
+                                <table class="observaciones">
+                                    <tr>
+                                        <td class="etiqueta" width="25%">OBSERVACIONES GENERALES</td>
+                                        <td class="valor">{{ observaciones }}</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        <br><br>
+        <div class="row" ng-show="LayoutFile.length != 0">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-10">
+                <div class="alert alert-{{ Alert.color }}">
+                    <strong style="font-size: 18px;">¡{{ Alert.estatus }}!</strong> 
+                    <div>{{Alert.msg}}</div>
+                    <ul >
+                        <li ng-repeat="err in Alert.err">{{ err }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row" ng-show="LayoutFile.length != 0">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-10" ng-show="Alert.btn == 0">
+                <button  
+                    ng-click="cancelarInventario();"
                     class="btn btn-default pull-right" >
-                    <i class="glyphicon glyphicon-repeat"></i> Interntar con un nuevo Layout
+                	<i class="glyphicon glyphicon-repeat"></i> Interntar con un nuevo Layout
                 </button>
-  			</div>
-  			
-  			<div class="col-sm-10" ng-show="Alert.btn == 1">
-  				<button  
-  					style="margin-left: 10px" 
-                	ng-click=""
+            </div>
+            <div class="col-sm-10" ng-show="Alert.btn == 1">
+                <button  
+                    style="margin-left: 10px" 
+                    ng-click="guardarInventario();"                    
                     class="btn btn-warning pull-right" >
-                    <i class="glyphicon glyphicon-floppy-disk"></i> Guardar de todos modos
+                	<i class="glyphicon glyphicon-floppy-disk"></i> Guardar de todos modos
                 </button>
-
                 <button  
-                	ng-click="cancelarInventario();"
+                    ng-click="cancelarInventario();"
                     class="btn btn-default pull-right" >
-                    <i class="glyphicon glyphicon-repeat"></i> Interntar con un nuevo Layout
+                	<i class="glyphicon glyphicon-repeat"></i> Interntar con un nuevo Layout
                 </button>
-  			</div>
-
-  			<div class="col-sm-10" ng-show="Alert.btn == 2">
-  				<button 
+            </div>
+            <div class="col-sm-10" ng-show="Alert.btn == 2">
+                <button 
                     style="margin-left: 10px" 
+                    ng-click="guardarInventario();"
                     class="btn btn-success pull-right" >
-                    <i class="glyphicon glyphicon-floppy-saved"></i> Guardar Inventario
+                	<i class="glyphicon glyphicon-floppy-saved"></i> Guardar Inventario
                 </button>
-
                 <button  
-                	ng-click="cancelarInventario();"
+                    ng-click="cancelarInventario();"
                     class="btn btn-default pull-right" >
-                    <i class="glyphicon glyphicon-remove"></i> Cancelar
+                	<i class="glyphicon glyphicon-remove"></i> Cancelar
                 </button>
             </div>
-
             <div class="col-sm-10" ng-show="Alert.btn == 3">
-  				<button 
-                    style="margin-left: 10px" 
+                <button 
+                    style="margin-left: 10px"
+                    ng-click="guardarInventario();" 
                     class="btn btn-info pull-right" >
-                    <i class="glyphicon glyphicon-floppy-disk"></i> Guardar Inventario en Ceros
+                	<i class="glyphicon glyphicon-floppy-disk"></i> Guardar Inventario en Ceros
                 </button>
-
                 <button  
-                	ng-click="cancelarInventario();"
+                    ng-click="cancelarInventario();"
                     class="btn btn-default pull-right" >
-                    <i class="glyphicon glyphicon-remove"></i> Cancelar
+                	<i class="glyphicon glyphicon-remove"></i> Cancelar
                 </button>
             </div>
         </div>
-
-  		<div class="row hidden">
-  			<div class="col-sm-12">
-  				<table class="table">
-  					<tr ng-repeat="layout in LayoutFile">
-  						<td>{{ layout[0] }}</td>
-  						<td>{{ layout[1] }}</td>
-  						<td>{{ layout[2] }}</td>
-  						<td>{{ layout[3] }}</td>
-  						<td>{{ layout[4] }}</td>
-  						<td>{{ layout[5] }}</td>
-  					</tr>
-  				</table>
-  			</div>
+        <div class="row hidden">
+            <div class="col-sm-12">
+                <table class="table">
+                    <tr ng-repeat="layout in LayoutFile">
+                        <td>{{ layout[0] }}</td>
+                        <td>{{ layout[1] }}</td>
+                        <td>{{ layout[2] }}</td>
+                        <td>{{ layout[3] }}</td>
+                        <td>{{ layout[4] }}</td>
+                        <td>{{ layout[5] }}</td>
+                    </tr>
+                </table>
+            </div>
         </div>
-        
         <div class="row hidden">
             <div class="col-sm-10">
-            	<button 
+                <button 
                     class="btn btn-info pull-right" 
                     ng-click="validaLayout();">
-                    <i class="glyphicon glyphicon-zoom-in"></i> Valida Layout
+                <i class="glyphicon glyphicon-zoom-in"></i> Valida Layout
                 </button>
-
                 <button 
                     class="btn btn-success pull-right" 
                     ng-click="readLayout();">
-                    <i class="glyphicon glyphicon-zoom-in"></i> Leer Layout
+                <i class="glyphicon glyphicon-zoom-in"></i> Leer Layout
                 </button>
-
                 <button 
                     class="btn btn-danger pull-right" 
                     ng-click="LimpiarDrope();">
-                    <i class="glyphicon glyphicon-zoom-in"></i> Leer Layout
+                <i class="glyphicon glyphicon-zoom-in"></i> Leer Layout
                 </button>
-
-                
-
                 <!-- <button 
                     ng-show="Accesorios.length == 0"
                     class="btn btn-primary pull-right" 
                     ng-click="validaInputs();">
                     <i class="glyphicon glyphicon-zoom-in"></i> Buscar Accesorios
-                </button> -->
+                    </button> -->
             </div>
         </div>
-  	</div>
-  	<div class="panel-footer">
-  		<div class="row">
-  			<div class="col-xs-12"> </div>
-  		</div>
-  	</div>
+    </div>
+    <div class="panel-footer">
+        <div class="row">
+            <div class="col-xs-12"> </div>
+        </div>
+    </div>
 </div>
