@@ -58,6 +58,19 @@ cargaInventario.prototype.get_insDetalleInventario = function(req, res, next){
     });
 };
 
+cargaInventario.prototype.post_delInventario = function(req, res, next){
+    var self = this;
+
+    var params = [{name: 'idEncabezado', value: req.query.idEncabezado, type: self.model.types.INT}];
+
+    self.model.query('DEL_INVENTARIO_SP', params, function(error,result){
+        self.view.expositor(res, {
+            error: error,
+            result: result
+        });
+    });
+}
+
 cargaInventario.prototype.get_accesoriosInventarioByVin = function(req, res, next) {
 
     var self = this;

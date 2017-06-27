@@ -7,6 +7,7 @@ registrationModule.controller('cargaInventarioController', function($scope, $roo
     $scope.Inv = {};
     $scope.MostrarInfo = false;
     $scope.MostrarAccesorios = false;
+    $scope.puedeGuardar = false;
     $scope.idsDetalle = [];
 
     $scope.init = function() {
@@ -59,6 +60,7 @@ registrationModule.controller('cargaInventarioController', function($scope, $roo
                       $scope.MostrarInfo = true;
                       if ($scope.Inv.detalle.length > 0){
                           $scope.MostrarAccesorios = true;
+                          $scope.puedeGuardar = true;
                       }else{
                           swal('Carga Inventarios','La unidad solicitada no cuenta con accesorios configurados.');
                       }
@@ -92,6 +94,7 @@ registrationModule.controller('cargaInventarioController', function($scope, $roo
 
     $scope.guardarInventario = function(){
         console.log("Inventario Accesorios", $scope.Inv);
+        $scope.puedeGuardar = false;
 
         var obsGrales = $scope.Inv.Observaciones == null || $scope.Inv.Observaciones == undefined ? '' : $scope.Inv.Observaciones.toUpperCase();
         var invReclama = 0;
@@ -149,16 +152,33 @@ registrationModule.controller('cargaInventarioController', function($scope, $roo
                       cargaInventarioRepository.insertaDetalleInventario(Accesorio).then(function(result){
                           $scope.idsDetalle.push(result.data[0].idDetalleInventario);
                       }, function(error){
-                        console.log("Error", error);
+                          swal('Carga Inventarios','No se pudo guardar el accesorio: ' + acce.caa_descripacce + '.');
+                          console.log("Error", error);
                       });
                   });
 
                   console.log("id Encabezado: ", idEncabezado);
                   console.log("ids Detalle: ", $scope.idsDetalle);
+
+                  if ($scope.idsDetalle.length == $scope.Inv.detalle.length){
+                      swal('Carga Inventarios','Se guardo su inventario exitosamente.');
+                      $scope.puedeGuardar = true;
+                  }else{
+                      cargaInventarioRepository.eliminaInventario(idEncabezado).then(function(result){
+                          swal('Carga Inventarios','No se pudo guardar su inventario.');
+                          $scope.puedeGuardar = true;
+                      }, function(error){
+                          console.log("Error", error);
+                      });
+                  }
+              }else{
+                  swal('Carga Inventarios','No se pudo guardar el inventario.');
+                  $scope.puedeGuardar = true;
               }
         }, function(error){
             swal('Carga Inventarios','No se pudo guardar su inventario.');
             console.log("Error", error);
+            $scope.puedeGuardar = true;
         });
     }
 

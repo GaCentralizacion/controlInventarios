@@ -52,6 +52,16 @@ registrationModule.factory('cargaInventarioRepository', function($http) {
                 }
 
             });
+        },
+        eliminaInventario: function(idEncabezado) {
+            return $http({
+                url: cargaInventarioURL + 'delInventario/',
+                method: 'POST',
+                params: {idEncabezado: idEncabezado},
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
         }
     };
 
