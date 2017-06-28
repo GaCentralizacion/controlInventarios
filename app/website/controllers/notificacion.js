@@ -44,7 +44,7 @@ Notificacion.prototype.get_crearNotificacion = function(req, res, next) {
                       {name: 'identificador', value: req.query.identificador, type: self.model.types.STRING }];
 
         self.model.query('SEL_VALIDA_NOTIFICACION_SP', params, function(error, result) {
-            var Parametros = result[0]; 
+            var Parametros = result[0];
             if( Parametros.success ){
                 var ParamNoti = [{name: 'identificador', value: Parametros.identificador, type: self.model.types.STRING },
                                  {name: 'descripcion', value: Parametros.descripcion, type: self.model.types.STRING },
@@ -53,7 +53,7 @@ Notificacion.prototype.get_crearNotificacion = function(req, res, next) {
                                  {name: 'idEmpresa', value: Parametros.idEmpresa, type: self.model.types.INT },
                                  {name: 'idSucursal', value: Parametros.idSucursal, type: self.model.types.INT }];
 
-                self.model.query('[Notificacion].[dbo].[INS_APROBACION_INVENTARIO_SP_TEST]', ParamNoti, function(errNoti, resNoti) {
+                self.model.query('[Notificacion].[dbo].[INS_APROBACION_INVENTARIO_SP]', ParamNoti, function(errNoti, resNoti) {
                     console.log("==== errNoti");
                     console.log(errNoti);
                     console.log("==== resNoti");
@@ -70,7 +70,7 @@ Notificacion.prototype.get_crearNotificacion = function(req, res, next) {
                 self.view.expositor(res, {
                     error: error,
                     result: Parametros
-                });                
+                });
             }
         });
     }
