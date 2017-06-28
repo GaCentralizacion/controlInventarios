@@ -1,112 +1,113 @@
-<div class="panel panel-default" ng-init="init();">
-  	<div class="panel-body">
-  		<div class="row">
-  			<div class="col-sm-5">
-  				<span>EMPRESA</span>
-                <select 
-                    class="form-control"
-                    ng-model="idEmpresa"
-                    ng-change="EmpresaSeleccionada()"
-                    ng-options="value.emp_idempresa as value.emp_nombre for (key, value) in Empresas">
-                    <option value="">- Seleccione Empresa -</option>
-                </select>
-  			</div>
-  			
-            <div class="col-sm-5">
-  				<span>SUCURSAL</span>
-                <select 
-                    class="form-control"
-                    ng-model="idSucursal"
-                    ng-change="Cambios();"
-                    ng-options="value.suc_idsucursal as value.suc_nombre for (key, value) in Sucursales[0].Sucursales">
-                    <option value="">- Seleccione Sucursal -</option>
-                </select>
-  			</div>
-        </div>
-        <br>
-        <div class="row">
-            <div class="col-sm-5">
-                <span>MODELO</span>
-                <select 
-                    class="form-control"
-                    ng-model="idModelo"
-                    ng-change="Cambios();"
-                    ng-options="value.iae_idcatalogo as value.iae_idcatalogo for (key, value) in Modelo">
-                    <option value="">- Seleccione Modelo -</option>
-                </select>                
-            </div>
+<div ng-init="init()">
+    	<div class="panel-body">
+    		<div class="row">
+    			<div class="col-sm-5">
+    				<span>EMPRESA</span>
+                  <select
+                      class="form-control"
+                      ng-model="idEmpresa"
+                      ng-change="EmpresaSeleccionada()"
+                      ng-options="value.emp_idempresa as value.emp_nombre for (key, value) in Empresas">
+                      <option value="">- Seleccione Empresa -</option>
+                  </select>
+    			</div>
 
-            <div class="col-sm-5">
-                <span>AÑO</span>
-                <select 
-                    class="form-control"
-                    ng-model="idAnio"
-                    ng-change="Cambios();"
-                    ng-options="value.iae_anomodelo as value.iae_anomodelo for (key, value) in Modelo | filter : { iae_idcatalogo : idModelo}: true">
-                    <option value="">- Seleccione Año Modelo -</option>
-                </select>
-            </div>
-  		</div>
-        <br>
+              <div class="col-sm-5">
+    				<span>SUCURSAL</span>
+                  <select
+                      class="form-control"
+                      ng-model="idSucursal"
+                      ng-change="Cambios();"
+                      ng-options="value.suc_idsucursal as value.suc_nombre for (key, value) in Sucursales[0].Sucursales">
+                      <option value="">- Seleccione Sucursal -</option>
+                  </select>
+    			</div>
+          </div>
+          <br>
+          <div class="row">
+              <div class="col-sm-5">
+                  <span>MODELO</span>
+                  <select
+                      class="form-control"
+                      ng-model="idModelo"
+                      ng-change="Cambios();"
+                      ng-options="value.iae_idcatalogo as value.iae_idcatalogo for (key, value) in Modelo">
+                      <option value="">- Seleccione Modelo -</option>
+                  </select>
+              </div>
 
-        <div class="row">
-            <div class="col-sm-10">
-                <button 
-                    ng-show="Accesorios.length == 0"
-                    class="btn btn-primary pull-right" 
-                    ng-click="validaInputs();">
-                    <i class="glyphicon glyphicon-zoom-in"></i> Buscar Accesorios
-                </button>
-            </div>
-        </div>
-        <br>
+              <div class="col-sm-5">
+                  <span>AÑO</span>
+                  <select
+                      class="form-control"
+                      ng-model="idAnio"
+                      ng-change="Cambios();"
+                      ng-options="value.iae_anomodelo as value.iae_anomodelo for (key, value) in Modelo | filter : { iae_idcatalogo : idModelo}: true">
+                      <option value="">- Seleccione Año Modelo -</option>
+                  </select>
+              </div>
+    		</div>
+          <br>
 
-        <div class="row">
-            <div class="col-sm-10">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <h4>Accesorios</h4>
-                        <p ng-show="Accesorios.length == 0">Seleccione los criterios para buscar los Accesorios</p>
-                        <table class="table">
-                            <tr ng-repeat="( key, acc ) in Accesorios">
-                                <td>{{ key + 1 }}</td>
-                                <td>{{ acc.descripcion }}</td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
+          <div class="row">
+              <div class="col-sm-10">
+                  <button
+                      ng-show="Accesorios.length == 0"
+                      class="btn btn-primary pull-right"
+                      ng-click="validaInputs();">
+                      <i class="glyphicon glyphicon-zoom-in"></i> Buscar Accesorios
+                  </button>
+              </div>
+          </div>
+          <br>
 
-        <div class="row">
-            <div class="col-sm-10"> <br><br>
-                <button 
-                    style="margin-left: 10px" 
-                    ng-show="Accesorios.length != 0"
-                    class="btn btn-success pull-right" 
-                    ng-click="generateLayout();">
-                    <i class="glyphicon glyphicon-save-file"></i> Descargar Layout
-                </button>
+          <div class="row">
+              <div class="col-sm-10">
+                  <div class="panel panel-default">
+                      <div class="panel-body">
+                          <h4>Accesorios</h4>
+                          <p ng-show="Accesorios.length == 0">Seleccione los criterios para buscar los Accesorios</p>
+                          <table class="table">
+                              <tr ng-repeat="( key, acc ) in Accesorios">
+                                  <td>{{ key + 1 }}</td>
+                                  <td>{{ acc.descripcion }}</td>
+                              </tr>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+          </div>
 
-                <button  
-                    ng-show="Accesorios.length != 0"
-                    class="btn btn-default pull-right" 
-                    ng-click="Erase();">
-                    <i class="glyphicon glyphicon-erase"></i> Generar otro
-                </button>
-            </div>
-        </div>
+          <div class="row">
+              <div class="col-sm-10"> <br><br>
+                  <button
+                      style="margin-left: 10px"
+                      ng-show="Accesorios.length != 0"
+                      class="btn btn-success pull-right"
+                      ng-click="generateLayout();">
+                      <i class="glyphicon glyphicon-save-file"></i> Descargar Layout
+                  </button>
 
-  		<div class="row hidden">
-  			<div class="col-sm-12">
-  				<span>VIN</span>
-  				<input type="text" name="" class="form-control">
-  			</div>
-  		</div>
-  	</div>
-  	<div class="panel-footer">
-  		<div class="row">
-  			<div class="col-xs-12"> </div>
-  		</div>
-  	</div>
+                  <button
+                      ng-show="Accesorios.length != 0"
+                      class="btn btn-default pull-right"
+                      ng-click="Erase();">
+                      <i class="glyphicon glyphicon-erase"></i> Generar otro
+                  </button>
+              </div>
+          </div>
+
+    		<div class="row hidden">
+    			<div class="col-sm-12">
+    				<span>VIN</span>
+    				<input type="text" name="" class="form-control">
+    			</div>
+    		</div>
+    	</div>
+    	<div class="panel-footer">
+    		<div class="row">
+    			<div class="col-xs-12"> </div>
+    		</div>
+    	</div>
+  </div>
 </div>
