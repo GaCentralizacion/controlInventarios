@@ -187,9 +187,16 @@ registrationModule.controller('cargaInventarioController', function($scope, $roo
                                           swal('Carga Inventarios','Se guardó su inventario exitosamente.');
                                           $scope.puedeGuardar = true;
                                       }else{
-                                          cargaInventarioRepository.eliminaInventario(idEncabezado);
-                                          swal('Carga Inventarios','Se presento un error al guardar en al menos uno de los accesorios y la carga no ha sido procesada.');
-                                          $scope.puedeGuardar = true;
+                                          cargaInventarioRepository.eliminaInventario(idEncabezado).then(function(result){
+                                              swal('Carga Inventarios','Se presento un error al guardar en al menos uno de los accesorios y la carga no ha sido procesada.');
+                                              $scope.puedeGuardar = true;
+                                          }, function(error){
+                                              console.log("Error", error);
+                                              swal('Carga Inventarios','Error no controlado.');
+                                          });
+                                          // cargaInventarioRepository.eliminaInventario(idEncabezado);
+                                          // swal('Carga Inventarios','Se presento un error al guardar en al menos uno de los accesorios y la carga no ha sido procesada.');
+                                          // $scope.puedeGuardar = true;
                                       }
                                   }
 
