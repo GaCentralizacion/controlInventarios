@@ -381,6 +381,8 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
                             else{
                                 // cargaInventarioRepository.eliminaInventario(idEncabezado)
                                 cargaInventarioRepository.eliminaInventario(idEncabezado).then(function(result){
+                                    console.log( 'success', result.data[0].success )
+                                    console.log( result )
                                     swal('Carga Inventarios','Se presento un error al guardar en al menos uno de los accesorios y la carga no ha sido procesada.');
                                 }, function(error){
                                     console.log("Error", error);
