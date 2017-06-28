@@ -182,10 +182,19 @@ registrationModule.controller('cargaInventarioController', function($scope, $roo
                                   if (key == ($scope.Inv.detalle.length - 1)){
                                       // console.log("id Encabezado: ", idEncabezado);
                                       // console.log("ids Detalle: ", $scope.idsDetalle);
-
+                                      // console.log( $scope.idsDetalle.length, $scope.Inv.detalle.length );
                                       if ($scope.idsDetalle.length == $scope.Inv.detalle.length){
-                                          swal('Carga Inventarios','Se guardó su inventario exitosamente.');
-                                          $scope.puedeGuardar = true;
+                                          // swal('Carga Inventarios','Se guardó su inventario exitosamente.');
+                                          swal({
+                                              title: "Carga Inventarios",
+                                              text: "Se guardó su inventario exitosamente",
+                                              showCancelButton: false,
+                                              confirmButtonText: "OK",
+                                          },
+                                          function(){
+                                              location.reload();
+                                          });
+                                          // $scope.puedeGuardar = true;
                                       }else{
                                           cargaInventarioRepository.eliminaInventario(idEncabezado).then(function(result){
                                               swal('Carga Inventarios','Se presento un error al guardar en al menos uno de los accesorios y la carga no ha sido procesada.');
