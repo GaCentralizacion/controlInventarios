@@ -1,3 +1,43 @@
 <div ng-init="init()">
-  Notificación para solicitud de Cambio de Estatus
+  <div ng-show="userData.notificaciones == true">
+      <div class="panel panel-default">
+        	<div class="panel-body">
+              <div class="row">
+                    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                      <label class="font-noraml">EMPRESA</label>
+                      <select class="form-control m-b" id="empresa" ng-model="indice" ng-change="EmpresaSeleccionada(indice);" ng-options="key as emp.emp_nombre for (key, emp) in Empresas">
+                          <option value=''>- Seleccione Empresa -</option>
+                      </select>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                      <label class="font-noraml">SUCURSAL</label>
+                      <select class="form-control m-b" id="sucursal" ng-model="idSucursal" ng-options="suc.suc_idsucursal as suc.suc_nombre for suc in Empresas[indice].Sucursales">
+                          <option value='' >- Seleccione Sucursal -</option>
+                      </select>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+              				<label class="font-noraml">VIN</LABEL>
+              				<input type="text" name="vin" class="form-control" ng-model="vin">
+              			</div>
+                </div>
+          </div>
+          <div class="panel-footer">
+            <div class="row">
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <button class="btn btn-success pull-right" ng-click="SolicitarCambioEstatus();"><i class="glyphicon glyphicon-send"></i> Solicitar cambio de estatus</button>
+              </div>
+            </div>
+        	</div>
+      </div>
+  </div>
+  <div ng-hide="userData.notificaciones">
+      <div class="row">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"></div>
+          <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 NotAllowed">
+              <i class="glyphicon glyphicon-warning-sign"></i> No tiene permiso para ingresar a este modulo.
+          </div>
+      </div>
+  </div>
 </div>
