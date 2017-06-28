@@ -367,6 +367,7 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
                         $scope.idsDetalle.push(result.data[0].idDetalleInventario);
 
                         if( key >= ( $scope.Accesorios.length - 1 ) ){
+                            console.log( $scope.idsDetalle.length, $scope.Accesorios.length );
                             if( $scope.idsDetalle.length == $scope.Accesorios.length ){
                                 swal({
                                     title: "Carga Inventarios",
