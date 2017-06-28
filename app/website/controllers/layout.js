@@ -153,7 +153,7 @@ Layout.prototype.post_upload = function(req, res, next){
             console.log( err );
             return res.end("Error uploading file.");
         }
-        console.log('Craga correcta');
+        // console.log('Craga correcta');
 
         self.view.expositor(res, {
             error: false,
@@ -164,9 +164,7 @@ Layout.prototype.post_upload = function(req, res, next){
 
 Layout.prototype.get_create = function(req, res, next) {
     var self = this;
-
-    console.log( JSON.parse( req.query.jsonData ) );
-
+    
     var xl = require('excel4node');
     var wb = new xl.Workbook({
         defaultFont: {
