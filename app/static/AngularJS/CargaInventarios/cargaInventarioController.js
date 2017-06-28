@@ -188,7 +188,7 @@ registrationModule.controller('cargaInventarioController', function($scope, $roo
                                           $scope.puedeGuardar = true;
                                       }else{
                                           cargaInventarioRepository.eliminaInventario(idEncabezado);
-                                          swal('Carga Inventarios','No se guardó su inventario, ocurrio un error al guardar alguno de los accesorios.');
+                                          swal('Carga Inventarios','Se presento un error al guardar en al menos uno de los accesorios y la carga no ha sido procesada.');
                                           $scope.puedeGuardar = true;
                                       }
                                   }

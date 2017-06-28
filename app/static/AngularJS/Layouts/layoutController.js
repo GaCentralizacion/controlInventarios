@@ -368,19 +368,25 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
 
                         if( key >= ( $scope.Accesorios.length - 1 ) ){
                             if( $scope.idsDetalle.length == $scope.Accesorios.length ){
-                                swal('Carga Inventarios','Se cargado correctamente el Layout con el id: ' + idEncabezado);
+                                swal({
+                                    title: "Carga Inventarios",
+                                    text: "Se guardó su inventario exitosamente",
+                                    showCancelButton: false,
+                                    confirmButtonText: "OK",
+                                },
+                                function(){
+                                    location.reload();
+                                });
                             }
                             else{
                                 // cargaInventarioRepository.eliminaInventario(idEncabezado)
                                 cargaInventarioRepository.eliminaInventario(idEncabezado).then(function(result){
-                                    swal('Error en la Carga de Inventario','Se presento un error al guardar en al menos uno de los accesorios y la carga no ha sido procesada.');
+                                    swal('Carga Inventarios','Se presento un error al guardar en al menos uno de los accesorios y la carga no ha sido procesada.');
                                 }, function(error){
                                     console.log("Error", error);
+                                    swal('Carga Inventarios','Error no controlado.');
                                 });
                             }
-                            setTimeout( function(){
-                                location.reload();
-                            },3000 );
                         }
                     }, function(error){
                         console.log("Error", error);
