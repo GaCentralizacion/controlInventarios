@@ -1,5 +1,19 @@
 .NotAllowed{
     font-size: 20px;
+    padding-top: 200px;
+    text-align: center
+}
+
+.NotAllowed i{
+    font-size: 60px;
     color: #d23939;
-    padding-top: 50px;
+}
+
+.NotAllowed p{
+    padding-top: 10px;
+}
+
+.NotAllowed a{
+  color: #d23939;
+  text-decoration: underline;
 }

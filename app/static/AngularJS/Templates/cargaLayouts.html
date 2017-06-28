@@ -1,5 +1,5 @@
 <link rel="stylesheet" type="text/css" href="css/layout/layout.css">
-<div class="panel panel-default">
+<div class="panel panel-default" ng-show="userData.cargaLayout">
     <div class="panel-body">
         <div class="row row_dropzone">
             <div class="col-sm-1"></div>
@@ -110,7 +110,7 @@
             <div class="col-sm-1"></div>
             <div class="col-sm-10">
                 <div class="alert alert-{{ Alert.color }}">
-                    <strong style="font-size: 18px;">¡{{ Alert.estatus }}!</strong> 
+                    <strong style="font-size: 18px;">¡{{ Alert.estatus }}!</strong>
                     <div>{{Alert.msg}}</div>
                     <ul >
                         <li ng-repeat="err in Alert.err">{{ err }}</li>
@@ -121,47 +121,47 @@
         <div class="row" ng-show="LayoutFile.length != 0">
             <div class="col-sm-1"></div>
             <div class="col-sm-10" ng-show="Alert.btn == 0">
-                <button  
+                <button
                     ng-click="cancelarInventario();"
                     class="btn btn-default pull-right" >
                 	<i class="glyphicon glyphicon-repeat"></i> Interntar con un nuevo Layout
                 </button>
             </div>
             <div class="col-sm-10" ng-show="Alert.btn == 1">
-                <button  
-                    style="margin-left: 10px" 
-                    ng-click="guardarInventario();"                    
+                <button
+                    style="margin-left: 10px"
+                    ng-click="guardarInventario();"
                     class="btn btn-warning pull-right" >
                 	<i class="glyphicon glyphicon-floppy-disk"></i> Guardar de todos modos
                 </button>
-                <button  
+                <button
                     ng-click="cancelarInventario();"
                     class="btn btn-default pull-right" >
                 	<i class="glyphicon glyphicon-repeat"></i> Interntar con un nuevo Layout
                 </button>
             </div>
             <div class="col-sm-10" ng-show="Alert.btn == 2">
-                <button 
-                    style="margin-left: 10px" 
+                <button
+                    style="margin-left: 10px"
                     ng-click="guardarInventario();"
                     ng-disabled="btnDisabled"
                     class="btn btn-success pull-right" >
                 	<i class="glyphicon glyphicon-floppy-saved"></i> Guardar Inventario
                 </button>
-                <button  
+                <button
                     ng-click="cancelarInventario();"
                     class="btn btn-default pull-right" >
                 	<i class="glyphicon glyphicon-remove"></i> Cancelar
                 </button>
             </div>
             <div class="col-sm-10" ng-show="Alert.btn == 3">
-                <button 
+                <button
                     style="margin-left: 10px"
-                    ng-click="guardarInventario();" 
+                    ng-click="guardarInventario();"
                     class="btn btn-info pull-right" >
                 	<i class="glyphicon glyphicon-floppy-disk"></i> Guardar Inventario en Ceros
                 </button>
-                <button  
+                <button
                     ng-click="cancelarInventario();"
                     class="btn btn-default pull-right" >
                 	<i class="glyphicon glyphicon-remove"></i> Cancelar
@@ -184,24 +184,24 @@
         </div>
         <div class="row hidden">
             <div class="col-sm-10">
-                <button 
-                    class="btn btn-info pull-right" 
+                <button
+                    class="btn btn-info pull-right"
                     ng-click="validaLayout();">
                     <i class="glyphicon glyphicon-zoom-in"></i> Valida Layout
                 </button>
-                <button 
-                    class="btn btn-success pull-right" 
+                <button
+                    class="btn btn-success pull-right"
                     ng-click="readLayout();">
                     <i class="glyphicon glyphicon-zoom-in"></i> Leer Layout
                 </button>
-                <button 
-                    class="btn btn-danger pull-right" 
+                <button
+                    class="btn btn-danger pull-right"
                     ng-click="LimpiarDrope();">
                     <i class="glyphicon glyphicon-zoom-in"></i> Leer Layout
                 </button>
-                <!-- <button 
+                <!-- <button
                     ng-show="Accesorios.length == 0"
-                    class="btn btn-primary pull-right" 
+                    class="btn btn-primary pull-right"
                     ng-click="validaInputs();">
                     <i class="glyphicon glyphicon-zoom-in"></i> Buscar Accesorios
                     </button> -->
@@ -211,6 +211,15 @@
     <div class="panel-footer">
         <div class="row">
             <div class="col-xs-12"> </div>
+        </div>
+    </div>
+</div>
+<div ng-hide="userData.cargaLayout">
+    <div class="row">
+        <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12 NotAllowed">
+            <i class="glyphicon glyphicon-exclamation-sign"></i>
+            <p>No tiene permiso para ingresar a este módulo.</p>
+            Click <a href="/" >aquí</a> para regresar
         </div>
     </div>
 </div>

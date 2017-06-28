@@ -1,5 +1,5 @@
 <div ng-init="init()">
-  <div ng-show="userData.cargaInventario == true">
+  <div ng-show="userData.cargaInventario">
       <div class="panel panel-default">
         	<div class="panel-body">
               <div class="row">
@@ -111,10 +111,10 @@
   </div>
   <div ng-hide="userData.cargaInventario">
       <div class="row">
-          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"></div>
-          <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 NotAllowed">
-              <i class="glyphicon glyphicon-warning-sign"></i> No tiene permiso para ingresar a este modulo.
-
+          <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12 NotAllowed">
+              <i class="glyphicon glyphicon-exclamation-sign"></i>
+              <p>No tiene permiso para ingresar a este módulo.</p>
+              Click <a href="/" >aquí</a> para regresar
           </div>
       </div>
   </div>
