@@ -175,6 +175,7 @@ registrationModule.controller('cargaInventarioController', function($scope, $roo
                                                idEstadoAccesorio: estadoAcce };
 
                               cargaInventarioRepository.insertaDetalleInventario(Accesorio).then(function(result){
+                                setTimeout( function(){
                                   if (result.data.length > 0){
                                       $scope.idsDetalle.push(result.data[0].idDetalleInventario);
                                   }
@@ -208,6 +209,7 @@ registrationModule.controller('cargaInventarioController', function($scope, $roo
                                           // $scope.puedeGuardar = true;
                                       }
                                   }
+                                },500);
 
                               }, function(error){
                                   alertFactory.warning('No se pudo guardar el accesorio: ' + acce.caa_descripacce + '.');
