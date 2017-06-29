@@ -8,7 +8,7 @@ registrationModule.controller('notificacionCambioEstatusController', function($s
       userFactory.ValidaSesion();
       $scope.userData = userFactory.getUserData();
       if($scope.userData !== undefined){
-          $scope.getEmpresas( $scope.userData.idUsr);
+          $scope.getEmpresas($scope.userData.idUsr);
       }
     }
 
@@ -30,7 +30,7 @@ registrationModule.controller('notificacionCambioEstatusController', function($s
     }
 
     $scope.SolicitarCambioEstatus = function(){
-        var mensaje = '';
+        var mensaje = 'Ocurrio un problema al enviar la notificación.';
         var empresa = $scope.idEmpresa === undefined || $scope.idEmpresa === 0 ? null : $scope.idEmpresa;
         var sucursal = $scope.idSucursal === undefined || $scope.idSucursal === 0 ? null : $scope.idSucursal;
         var vinIngresado = $scope.vin === undefined || $scope.vin === '' ? null : $scope.vin;
@@ -50,16 +50,28 @@ registrationModule.controller('notificacionCambioEstatusController', function($s
                 } else {
                     var resultado = result.data[0];
                      if ( resultado.error === 0){
-                        mensaje = 'Se envio la notificación exitosamente.';
-                     }else{
-                        mensaje = 'Ocurrio un problema al enviar la notificación.'
+                        mensaje = 'Se envió la notificación exitosamente.';
                      }
                 }
-                swal('Notificaciones', mensaje);
+
+                $scope.mostrarRespuesta(mensaje);
             },function(error){
                 console.log("Error", error);
+                $scope.mostrarRespuesta(mensaje);
             });
         }
+    }
+
+    $scope.mostrarRespuesta = function (mensaje){
+          swal({
+              title: "Notificaciones",
+              text: mensaje,
+              showCancelButton: false,
+              confirmButtonText: "OK",
+          },
+          function(){
+              location.reload();
+          });
     }
 
 
