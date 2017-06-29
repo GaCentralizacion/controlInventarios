@@ -104,9 +104,9 @@ registrationModule.controller('cargaInventarioController', function($scope, $roo
     $scope.guardarInventario = function(){
         $scope.puedeGuardar = false;
         $scope.idsDetalle = [];
+        $scope.respuestas = 0;
         var sumaCantRecibida = 0;
         var verificaCant = true;
-        $scope.respuestas = 0;
 
         var obsGrales = $scope.Inv.Observaciones == null || $scope.Inv.Observaciones == undefined ? '' : $scope.Inv.Observaciones.toUpperCase();
         var invReclama = 0;
@@ -141,7 +141,7 @@ registrationModule.controller('cargaInventarioController', function($scope, $roo
                                    reclama: invReclama };
 
                 cargaInventarioRepository.insertaEncabezadoInventario(Encabezado).then(function(result){
-                      if (result.data.length > 0){
+                      if (result.data[0].idEncabezadoInventario !== undefined){
                           var idEncabezado =  result.data[0].idEncabezadoInventario;
 
                           $scope.Inv.detalle.forEach(function(acce, key){
@@ -176,46 +176,29 @@ registrationModule.controller('cargaInventarioController', function($scope, $roo
                                                idEstadoAccesorio: estadoAcce };
 
                               cargaInventarioRepository.insertaDetalleInventario(Accesorio).then(function(result){
-                                setTimeout( function(){
                                     $scope.respuestas += 1;
-                                    if (result.data.length > 0){
+
+                                    if (result.data[0].idDetalleInventario !== undefined){
                                         $scope.idsDetalle.push(result.data[0].idDetalleInventario);
                                     }
 
-                                    console.log(key, $scope.respuestas);
-                                    if ($scope.respuestas === ($scope.Inv.detalle.length)){
-                                        console.log("soy la última respuesta");
-                                        console.log($scope.idsDetalle);
-                                        if ($scope.idsDetalle.length == $scope.Inv.detalle.length){
-                                            swal({
-                                                title: "Carga Inventarios",
-                                                text: "Se guardó su inventario exitosamente.",
-                                                showCancelButton: false,
-                                                confirmButtonText: "OK",
-                                            },
-                                            function(){
-                                                location.reload();
-                                            });
-                                        }else{
-                                            cargaInventarioRepository.eliminaInventario(idEncabezado).then(function(result){
-                                                swal('Carga Inventarios','Se presento un error al guardar en al menos uno de los accesorios y la carga no ha sido procesada.');
-                                                $scope.puedeGuardar = true;
-                                            }, function(error){
-                                                console.log("Error", error);
-                                                swal('Carga Inventarios','Error no controlado.');
-                                            });
-                                        }
+                                    if ($scope.respuestas == ($scope.Inv.detalle.length)){
+                                        $scope.validaAccesoriosCompletos();
                                     }
-                                },500);
-
                               }, function(error){
-                                  alertFactory.warning('No se pudo guardar el accesorio: ' + acce.caa_descripacce + '.');
                                   console.log("Error", error);
+                                  $scope.respuestas += 1;
+                                  alertFactory.warning('No se pudo guardar el accesorio: ' + acce.caa_descripacce + '.');
+
+                                  if ($scope.respuestas == ($scope.Inv.detalle.length)){
+                                      $scope.validaAccesoriosCompletos();
+                                  }
+
                               });
                           });
 
                       }else{
-                          swal('Carga Inventarios','No se pudo guardar el inventario, no se guardarán los accesorios.');
+                          swal('Carga Inventarios','No se pudo guardar el inventario.');
                           $scope.puedeGuardar = true;
                       }
                 }, function(error){
@@ -231,6 +214,29 @@ registrationModule.controller('cargaInventarioController', function($scope, $roo
         }else{
             swal('Carga Inventarios','No puede guardar el inventario, el total de los accesorios recibidos debe ser mayor a 0.');
             $scope.puedeGuardar = true;
+        }
+    }
+
+
+    $scope.validaAccesoriosCompletos = function(){
+        if ($scope.idsDetalle.length == $scope.Inv.detalle.length){
+            swal({
+                title: "Carga Inventarios",
+                text: "Se guardó su inventario exitosamente.",
+                showCancelButton: false,
+                confirmButtonText: "OK",
+            },
+            function(){
+                location.reload();
+            });
+        }else{
+            cargaInventarioRepository.eliminaInventario(idEncabezado).then(function(result){
+                swal('Carga Inventarios','Se presento un error al guardar en al menos uno de los accesorios y la carga no ha sido procesada.');
+                $scope.puedeGuardar = true;
+            }, function(error){
+                console.log("Error", error);
+                swal('Carga Inventarios','Error no controlado.');
+            });
         }
     }
 
