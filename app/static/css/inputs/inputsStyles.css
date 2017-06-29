@@ -2,6 +2,15 @@ input{
   text-transform:uppercase;
 }
 
-.controlDisable{
+input[readonly], input[disabled]{
   background-color: white !important;
+  border-style: none;
+}
+
+.noBorder{
+    border-style: none;
+}
+
+.labelContainer{
+    padding-bottom: 15px;
 }

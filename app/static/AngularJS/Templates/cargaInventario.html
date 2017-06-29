@@ -1,7 +1,16 @@
 <div ng-init="init()">
   <div ng-show="userData.cargaInventario">
       <div class="panel panel-default">
+          <!-- <div class="panel-heading">
+              algo
+          </div> -->
         	<div class="panel-body">
+              <div class="row">
+                  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                      <h3>Carga inventario</h3>
+                      <br>
+                  </div>
+              </div>
               <div class="row">
                     <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                       <label class="font-noraml">EMPRESA</label>
@@ -40,28 +49,28 @@
           <div class="panel panel-default">
               <div class="panel-body">
                   <div class="row">
-                    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                      <label class="font-noraml">VIN</LABEL>
-                      <input type="text" name="vinUnidad" class="form-control controlDisable" ng-model="Inv.vin" readonly>
+                    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 labelContainer">
+                      <strong class="font-noraml">VIN:  </strong><span>{{Inv.vin}}</span>
+                      <!-- <input type="text" name="vinUnidad" class="form-control" ng-model="Inv.vin" readonly> -->
                     </div>
-                    <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
-                      <label class="font-noraml">NÚM. INVENTARIO</LABEL>
-                      <input type="text" name="numInventario"  class="form-control controlDisable" value="{{Inv.NoInventario + 1}}" readonly>
+                    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 labelContainer">
+                      <strong class="font-noraml">NÚM. INVENTARIO:  </strong><span>{{Inv.NoInventario + 1}}</span>
+                      <!-- <input type="text" name="numInventario"  class="form-control" value="{{Inv.NoInventario + 1}}" readonly> -->
                     </div>
-                    <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
-                      <label class="font-noraml">CATÁLOGO</LABEL>
-                      <input type="text" name="catalogo" class="form-control controlDisable" ng-model="Inv.catalogo" readonly>
+                    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 labelContainer">
+                      <strong class="font-noraml">CATÁLOGO:  </strong><span>{{Inv.catalogo}}</span>
+                      <!-- <input type="text" name="catalogo" class="form-control" ng-model="Inv.catalogo" readonly> -->
                     </div>
-                    <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
-                      <label class="font-noraml">DESCRIPCIÓN</LABEL>
-                      <input type="text" name="descripcion" class="form-control controlDisable" ng-model="Inv.modelo" readonly>
+                    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 labelContainer">
+                      <strong class="font-noraml">DESCRIPCIÓN:  </strong>{{Inv.modelo}}<span></span>
+                      <!-- <input type="text" name="descripcion" class="form-control" ng-model="Inv.modelo" readonly> -->
                     </div>
-                    <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
-                      <label class="font-noraml">AÑO</LABEL>
-                      <input type="text" name="anio" class="form-control controlDisable" ng-model="Inv.anioModelo" readonly>
+                    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 labelContainer">
+                      <strong class="font-noraml">AÑO:  </strong><span>{{Inv.anioModelo}}</span>
+                      <!-- <input type="text" name="anio" class="form-control" ng-model="Inv.anioModelo" readonly> -->
                     </div>
                   </div>
-                  <br/>
+                  </br>
                   <div class="row" ng-show="MostrarAccesorios">
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover ">
@@ -78,13 +87,13 @@
                                 <tr ng-repeat="(key, acce) in Inv.detalle">
                                     <td>{{acce.caa_descripacce}}</td>
                                     <td>
-                                        <input type="number" min="0" class="form-control" ng-model="acce.cantRecibida" ng-change="cambiaCant(key,true)" >
+                                        <input type="number" min="0" class="form-control noBorder" ng-model="acce.cantRecibida" ng-change="cambiaCant(key,true)" >
                                     </td>
                                     <td>
-                                        <input type="number" min="0" class="form-control" ng-model="acce.cantDaniados" ng-change="cambiaCant(key,false)">
+                                        <input type="number" min="0" class="form-control noBorder" ng-model="acce.cantDaniados" ng-change="cambiaCant(key,false)">
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control" ng-model="acce.observaciones">
+                                        <input type="text" class="form-control noBorder" ng-model="acce.observaciones">
                                     </td>
                                     <!-- <td><button class="btn btn-danger glyphicon glyphicon-trash" ng-click=""></button></td> -->
                                 </tr>
@@ -94,8 +103,8 @@
                   </div>
                   <div class="row" ng-show="MostrarAccesorios">
                       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-right">
-                        <label class="font-noraml">OBSERVACIONES</LABEL>
-                        <input type="text" name="obsGrales" class="form-control" ng-model="Inv.Observaciones">
+                          <label class="font-noraml">OBSERVACIONES</LABEL>
+                          <input type="text" name="obsGrales" class="form-control" ng-model="Inv.Observaciones">
                       </div>
                   </div>
               </div>
