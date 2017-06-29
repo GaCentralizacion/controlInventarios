@@ -392,7 +392,7 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
                                     });
                                 }
                             }
-                        },500);
+                        },1000);
                     }, function(error){
                         console.log("Error", error);
                     });
