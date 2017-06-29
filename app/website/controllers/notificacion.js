@@ -54,17 +54,17 @@ Notificacion.prototype.get_crearNotificacion = function(req, res, next) {
                                  {name: 'idSucursal', value: Parametros.idSucursal, type: self.model.types.INT }];
 
                 self.model.query('[Notificacion].[dbo].[INS_APROBACION_INVENTARIO_SP]', ParamNoti, function(errNoti, resNoti) {
-                    console.log("==== errNoti");
-                    console.log(errNoti);
-                    console.log("==== resNoti");
-                    console.log(resNoti);
+                    // console.log("==== errNoti");
+                    // console.log(errNoti);
+                    // console.log("==== resNoti");
+                    // console.log(resNoti);
 
                     self.view.expositor(res, {
                         error: errNoti,
                         result: resNoti
                     });
                 });
-                console.log( ParamNoti );
+                // console.log( ParamNoti );
             }
             else{
                 self.view.expositor(res, {

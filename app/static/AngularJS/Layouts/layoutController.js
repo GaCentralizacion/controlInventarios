@@ -368,12 +368,13 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
                     
                     cargaInventarioRepository.insertaDetalleInventario(Accesorio).then(function(result){
                         $scope.respuestas += 1;
-                        if( result.data.length > 0 ){
+                        // if( result.data.length > 0 ){
+                        if (result.data[0].idDetalleInventario !== undefined){
                             $scope.idsDetalle.push(result.data[0].idDetalleInventario);
                         }
 
                         if( $scope.respuestas == $scope.Accesorios.length ){
-                            $scope.validaAccesoriosCompletos
+                            $scope.validaAccesoriosCompletos()
                         }
                     }, function(error){
                         console.log("Error", error);
