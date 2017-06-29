@@ -381,11 +381,6 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
                                 function(){
                                     location.reload();
                                 });
-                                // if( $scope.idsDetalle.length == $scope.Accesorios.length ){
-                                // }
-                                // else{
-                                    // cargaInventarioRepository.eliminaInventario(idEncabezado)
-                                // }
                             }
                             else{
                                 cargaInventarioRepository.eliminaInventario(idEncabezado).then(function(result){
@@ -398,9 +393,6 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
                                 });
                             }
                         }
-
-                        // setTimeout( function(){
-                        // },500);
                     }, function(error){
                         console.log("Error", error);
                     });
