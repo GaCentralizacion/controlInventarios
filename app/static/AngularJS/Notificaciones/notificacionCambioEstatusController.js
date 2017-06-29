@@ -45,7 +45,6 @@ registrationModule.controller('notificacionCambioEstatusController', function($s
         }else {
             //Se realiza la llamada al servicio para levantar la notificación
             notificacionRepository.getNotificacion(empresa, sucursal, idUsuarioSolicitante, vinIngresado).then(function(result){
-                debugger;
                 if (result.data.success !== undefined){
                     mensaje = result.data.msg;
                 } else {
