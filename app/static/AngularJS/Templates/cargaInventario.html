@@ -87,10 +87,10 @@
                                 <tr ng-repeat="(key, acce) in Inv.detalle">
                                     <td>{{acce.caa_descripacce}}</td>
                                     <td>
-                                        <input type="number" min="0" class="form-control noBorder" ng-model="acce.cantRecibida" ng-change="cambiaCant(key,true)" >
+                                        <input type="text" ng-pattern="/^[0-9]*$/" min="0" class="form-control noBorder" ng-model="acce.cantRecibida" ng-change="cambiaCant(key,true)">
                                     </td>
                                     <td>
-                                        <input type="number" min="0" class="form-control noBorder" ng-model="acce.cantDaniados" ng-change="cambiaCant(key,false)">
+                                        <input type="text" ng-pattern="/^[0-9]*$/" min="0" class="form-control noBorder" ng-model="acce.cantDaniados" ng-change="cambiaCant(key,false)">
                                     </td>
                                     <td>
                                         <input type="text" class="form-control noBorder" ng-model="acce.observaciones">

@@ -20,9 +20,9 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
 
     $scope.init = function() {
         userFactory.ValidaSesion();
-        
+
         $scope.getEmpresas( $scope.idUsuario );
-        $scope.getAnioModelo(); 
+        $scope.getAnioModelo();
     }
 
     $scope.getEmpresas = function( idUsuario ){
@@ -63,7 +63,7 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
             swal('Layout','No se ha seleccionado el año.');
         }
         else{
-            
+
             var lbl_empresa  = filterFilter( $scope.Empresas , {emp_idempresa: $scope.idEmpresa} );
             var lbl_sucursal = filterFilter( $scope.Sucursales[0].Sucursales , {suc_idsucursal: $scope.idSucursal} );
             var arr_modelo   = filterFilter( $scope.Modelo , {iae_idcatalogo: $scope.idModelo} );
@@ -120,7 +120,7 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
 
     var myDropzone
     $scope.Dropzone = function(){
-        myDropzone = new Dropzone("#idDropzone", { 
+        myDropzone = new Dropzone("#idDropzone", {
             url: "/api/layout/upload/",
             uploadMultiple: 0,
             acceptedFiles: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
@@ -132,7 +132,7 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
 
             $(".row_dropzone").hide();
         });
-        
+
     }
 
     $scope.readLayout = function( filename ){
@@ -219,7 +219,7 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
                     $scope.Accesorios[ key ].daniada       = $scope.LayoutFile[ inicio ][3] == '' ? 0 : $scope.LayoutFile[ inicio ][3];
                     $scope.Accesorios[ key ].observaciones = $scope.LayoutFile[ inicio ][4];
 
-                    // Validamos el estatus de reclamacion 
+                    // Validamos el estatus de reclamacion
                     if( $scope.Accesorios[ key ].recibida != item.iad_cantdefault ){
                         $scope.reclama = 1;
                     }
@@ -319,7 +319,7 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
                             errLayout.push( 'CATÁLOGO: ' + $scope.VIN.catalogo );
                             errLayout.push( 'MODELO: ' + $scope.VIN.modelo );
                             errLayout.push( 'AÑO MODELO: ' + $scope.VIN.anioModelo );
-                            
+
                             $scope.Alert.color   = 'danger';
                             $scope.Alert.estatus = 'Advertencia';
                             $scope.Alert.msg     = 'El VIN ' + $scope.VIN.vin + ' pertenece a un modelo distinto al Layout:';
@@ -365,7 +365,7 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
                                        daniados: parseInt( item.daniada ),
                                        observaciones: item.observaciones.toUpperCase(),
                                        idEstadoAccesorio: item.estatus };
-                    
+
                     cargaInventarioRepository.insertaDetalleInventario(Accesorio).then(function(result){
                         $scope.respuestas += 1;
                         // if( result.data.length > 0 ){
@@ -374,7 +374,7 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
                         }
 
                         if( $scope.respuestas == $scope.Accesorios.length ){
-                            $scope.validaAccesoriosCompletos()
+                            $scope.validaAccesoriosCompletos(idEncabezado);
                         }
                     }, function(error){
                         console.log("Error", error);
@@ -382,7 +382,7 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
                         alertFactory.warning('No se pudo guardar el accesorio: ' + acce.caa_descripacce + '.');
 
                         if ($scope.respuestas == ($scope.Inv.detalle.length)){
-                            $scope.validaAccesoriosCompletos();
+                            $scope.validaAccesoriosCompletos(idEncabezado);
                         }
                     });
                 });
@@ -393,10 +393,10 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
         }, function(error){
             swal('Carga Inventarios','No se pudo guardar su inventario.');
             console.log("Error", error);
-        });        
+        });
     }
 
-    $scope.validaAccesoriosCompletos = function(){
+    $scope.validaAccesoriosCompletos = function(idEncabezado){
         if( $scope.idsDetalle.length >= $scope.Accesorios.length  ){
             swal({
                 title: "Carga Inventarios",

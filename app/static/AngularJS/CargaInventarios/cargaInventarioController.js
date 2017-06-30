@@ -90,13 +90,13 @@ registrationModule.controller('cargaInventarioController', function($scope, $roo
         if(recibido){
             var cant = $scope.Inv.detalle[index].cantRecibida;
             if (cant === undefined){
-                $scope.Inv.detalle[index].cantRecibida = 0;
+                $scope.Inv.detalle[index].cantRecibida = '';
               }
         }
         else{
             var cant = $scope.Inv.detalle[index].cantDaniados;
             if (cant === undefined){
-                $scope.Inv.detalle[index].cantDaniados = 0;
+                $scope.Inv.detalle[index].cantDaniados = '';
               }
         }
     }
@@ -112,10 +112,10 @@ registrationModule.controller('cargaInventarioController', function($scope, $roo
         var invReclama = 0;
 
         $scope.Inv.detalle.forEach(function(item){
-            if(item.cantRecibida === null){
+            if(item.cantRecibida === null || item.cantRecibida === ''){
                 item.cantRecibida = 0;
             }
-            if(item.cantDaniados === null){
+            if(item.cantDaniados === null || item.cantDaniados === ''){
                 item.cantDaniados = 0;
             }
 
@@ -183,7 +183,7 @@ registrationModule.controller('cargaInventarioController', function($scope, $roo
                                     }
 
                                     if ($scope.respuestas == ($scope.Inv.detalle.length)){
-                                        $scope.validaAccesoriosCompletos();
+                                        $scope.validaAccesoriosCompletos(idEncabezado);
                                     }
                               }, function(error){
                                   console.log("Error", error);
@@ -191,7 +191,7 @@ registrationModule.controller('cargaInventarioController', function($scope, $roo
                                   alertFactory.warning('No se pudo guardar el accesorio: ' + acce.caa_descripacce + '.');
 
                                   if ($scope.respuestas == ($scope.Inv.detalle.length)){
-                                      $scope.validaAccesoriosCompletos();
+                                      $scope.validaAccesoriosCompletos(idEncabezado);
                                   }
 
                               });
@@ -218,7 +218,7 @@ registrationModule.controller('cargaInventarioController', function($scope, $roo
     }
 
 
-    $scope.validaAccesoriosCompletos = function(){
+    $scope.validaAccesoriosCompletos = function(idEncabezado){
         if ($scope.idsDetalle.length == $scope.Inv.detalle.length){
             swal({
                 title: "Carga Inventarios",
