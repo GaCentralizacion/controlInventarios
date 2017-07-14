@@ -76,9 +76,15 @@
                             <h4>Accesorios</h4>
                             <p ng-show="Accesorios.length == 0">Seleccione los criterios para buscar los Accesorios</p>
                             <table class="table">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Accesorio</th>
+                                    <th>Unidades requeridas</th>
+                                </tr>
                                 <tr ng-repeat="( key, acc ) in Accesorios">
                                     <td>{{ key + 1 }}</td>
                                     <td>{{ acc.descripcion }}</td>
+                                    <td>{{ acc.default }}</td>
                                 </tr>
                             </table>
                         </div>

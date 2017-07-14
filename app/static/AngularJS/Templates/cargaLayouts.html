@@ -1,13 +1,13 @@
 <link rel="stylesheet" type="text/css" href="css/layout/layout.css">
 <div class="panel panel-default" ng-show="userData.cargaLayout">
     <div class="panel-body">
-      <div class="row">
+      <div class="row onlyPrint">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
               <h3>Carga layout</h3>
               <br>
           </div>
       </div>
-        <div class="row row_dropzone">
+        <div class="row row_dropzone onlyPrint">
             <div class="col-sm-1"></div>
             <div class="col-sm-10" ng-init="Dropzone();">
                 <form action="/file-upload" class="dropzone" id="idDropzone">
@@ -18,15 +18,15 @@
             </div>
         </div>
         <div class="row" ng-show="LayoutSuccess">
-            <div class="col-sm-1"></div>
+            <div class="col-sm-1 onlyPrint"></div>
             <div class="col-sm-10">
-                <table class="tbl-layout">
+                <table class="tbl-layout" id="layout">
                     <head>
                         <tr>
                             <td colspan="6" class="titulo">Inventario de Accesorios</td>
                         </tr>
                         <tr>
-                            <td colspan="2" class="etiqueta">EMPRESA</td>
+                            <td colspan="2" class="etiqueta" style="font-size: 10px">EMPRESA</td>
                             <td></td>
                             <td></td>
                             <td colspan="2" class="etiqueta">SUCURSAL</td>
@@ -61,7 +61,7 @@
                             <td colspan="2" class="etiqueta">&nbsp;</td>
                             <td class="etiqueta">USUARIO</td>
                         </tr>
-                        <tr>
+                        <tr class="guardado">
                             <td class="valor">{{ LayoutFile[13][0] }}</td>
                             <td colspan="2" class="valor">{{ LayoutFile[13][1] }}</td>
                             <td colspan="2" class="valor">&nbsp;</td>
@@ -90,7 +90,7 @@
                                         <td class="tval">{{ acc.caa_descripacce }}</td>
                                         <td class="tval">{{ acc.recibida }}</td>
                                         <td class="tval">{{ acc.daniada }}</td>
-                                        <td colspan="2" class="tval">{{ acc.observaciones }} <!-- {{ acc.lblestatus }} --></td>
+                                        <td colspan="2" class="tval">{{ acc.observaciones }}<!-- {{ acc.lblestatus }} --></td>
                                     </tr>
                                 </table>
                             </td>
@@ -101,7 +101,7 @@
                             <td colspan="6">
                                 <table class="observaciones">
                                     <tr>
-                                        <td class="etiqueta" width="25%">OBSERVACIONES GENERALES</td>
+                                        <td class="etiqueta" width="25%" valign="top">OBSERVACIONES GENERALES</td>
                                         <td class="valor">{{ observaciones }}</td>
                                     </tr>
                                 </table>
@@ -111,8 +111,10 @@
                 </table>
             </div>
         </div>
-        <br><br>
-        <div class="row" ng-show="LayoutFile.length != 0">
+        <div class="onlyPrint">
+            <br><br>
+        </div>
+        <div class="row onlyPrint" ng-show="LayoutFile.length != 0">
             <div class="col-sm-1"></div>
             <div class="col-sm-10">
                 <div class="alert alert-{{ Alert.color }}">
@@ -124,13 +126,18 @@
                 </div>
             </div>
         </div>
-        <div class="row" ng-show="LayoutFile.length != 0">
+        <div class="row onlyPrint" ng-show="LayoutFile.length != 0">
             <div class="col-sm-1"></div>
             <div class="col-sm-10" ng-show="Alert.btn == 0">
                 <button
+                    onClick="imprSelec('layout')"
+                    class="btn btn-default pull-right" >
+                    <i class="glyphicon glyphicon-repeat"></i> Imprimir
+                </button>
+                <button
                     ng-click="cancelarInventario();"
                     class="btn btn-default pull-right" >
-                	<i class="glyphicon glyphicon-repeat"></i> Interntar con un nuevo Layout
+                	<i class="glyphicon glyphicon-repeat"></i> Intentar con un nuevo Layout
                 </button>
             </div>
             <div class="col-sm-10" ng-show="Alert.btn == 1">
@@ -143,10 +150,39 @@
                 <button
                     ng-click="cancelarInventario();"
                     class="btn btn-default pull-right" >
-                	<i class="glyphicon glyphicon-repeat"></i> Interntar con un nuevo Layout
+                	<i class="glyphicon glyphicon-repeat"></i> Intentar con un nuevo Layout
                 </button>
+
+                
+
+                <!-- <a href="javascript:imprSelec('muestra')">Imprimir Tabla</a> -->
+
+                <script type="text/javascript">
+                function imprSelec(muestra){
+                    // var ficha=document.getElementById(muestra);
+                    // var ventimp=window.open(' ','popimpr');
+                    // ventimp.document.write(ficha.innerHTML);
+                    // ventimp.document.close();
+                    // ventimp.print();
+                    // ventimp.close();
+
+                    // var ficha = document.getElementById(muestra);
+                    //   var ventimp = window.open(' ', '_blank');
+                    //   ventimp.document.write( ficha.innerHTML );
+                    //   ventimp.document.close();
+                    //   var css = ventimp.document.createElement("link");
+                    // css.setAttribute("href", "tuhojadeeestilos.css");
+                    // css.setAttribute("rel", "stylesheet");
+                    // css.setAttribute("type", "text/css");
+                    // ventimp.document.head.appendChild(css);
+                    //   ventimp.print( );
+                    //   ventimp.close();
+
+                    window.print();
+                }
+                </script>
             </div>
-            <div class="col-sm-10" ng-show="Alert.btn == 2">
+            <div class="col-sm-10" ng-show="Alert.btn == 2" id="guardar">
                 <button
                     style="margin-left: 10px"
                     ng-click="guardarInventario();"
@@ -160,6 +196,21 @@
                 	<i class="glyphicon glyphicon-remove"></i> Cancelar
                 </button>
             </div>
+
+            <div class="col-sm-10 onlyPrint" id="imprimir" style="display: none;">
+                <button
+                    style="margin-left: 10px"
+                    onClick="imprSelec('layout')"
+                    class="btn btn-primary pull-right" >
+                    <i class="glyphicon glyphicon-print"></i> Imprimir Layout
+                </button>
+                <button
+                    ng-click="cancelarInventario();"
+                    class="btn btn-default pull-right" >
+                    <i class="glyphicon glyphicon-repeat"></i> Cargar un nuevo Layout
+                </button>
+            </div>
+
             <div class="col-sm-10" ng-show="Alert.btn == 3">
                 <button
                     style="margin-left: 10px"
@@ -174,7 +225,7 @@
                 </button>
             </div>
         </div>
-        <div class="row hidden">
+        <div class="row hidden onlyPrint">
             <div class="col-sm-12">
                 <table class="table">
                     <tr ng-repeat="layout in LayoutFile">
@@ -188,7 +239,7 @@
                 </table>
             </div>
         </div>
-        <div class="row hidden">
+        <div class="row hidden onlyPrint">
             <div class="col-sm-10">
                 <button
                     class="btn btn-info pull-right"
@@ -214,7 +265,7 @@
             </div>
         </div>
     </div>
-    <div class="panel-footer">
+    <div class="panel-footer onlyPrint">
         <div class="row">
             <div class="col-xs-12">
                 <!-- <button class="btn btn-success pull-right" ng-click="PedirInsercion();">Test</button> -->
@@ -222,7 +273,7 @@
         </div>
     </div>
 </div>
-<div ng-hide="userData.cargaLayout">
+<div ng-hide="userData.cargaLayout" class="onlyPrint">
     <div class="row">
         <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12 NotAllowed">
             <i class="glyphicon glyphicon-exclamation-sign"></i>
@@ -231,3 +282,30 @@
         </div>
     </div>
 </div>
+
+<style type="text/css" media="print">
+    .onlyPrint{
+        display:none !important;
+    }
+
+    .valor, .tval{
+        color: #000 !important;
+    }
+
+    .tbl-layout {
+        margin-top: 0 !important;
+    }
+
+    #content-container {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+    .tbl-layout .valor, .tbl-layout .valor_success{
+        color: black !important;
+    }
+
+    .panel{
+        margin-bottom: 0 !important;
+    }
+</style>

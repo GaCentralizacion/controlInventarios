@@ -34,12 +34,12 @@
     <div id="container" class="effect aside-float aside-bright mainnav-sm">
         <!--NAVBAR-->
         <!--===================================================-->
-        <header id="navbar" ng-show="mostrarMenu == 1">
+        <header id="navbar" ng-show="mostrarMenu == 1" class="onlyPrint">
             <div id="navbar-container" class="boxed">
                 <!--Brand logo & name-->
                 <!--================================-->
-                <div class="navbar-header">
-                    <a href="#" class="navbar-brand" data-toggle="tooltip" title="Salir" ng-click="salir()">
+                <div class="navbar-header onlyPrint">
+                    <a href="#" class="navbar-brand " data-toggle="tooltip" title="Salir" ng-click="salir()">
                         <img src="img/logo.png" alt="Nifty Logo" class="brand-icon">
                         <div class="brand-title">
                             <span class="brand-text">GA</span>
@@ -50,7 +50,7 @@
                 <!--End brand logo & name-->
                 <!--Navbar Dropdown-->
                 <!--================================-->
-                <div class="navbar-content clearfix">
+                <div class="navbar-content clearfix onlyPrint">
                     <ul class="nav navbar-top-links pull-left">
                         <!--Navigation toogle button-->
                         <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
@@ -101,7 +101,7 @@
             <!--===================================================-->
             <!--MAIN NAVIGATION-->
             <!--===================================================-->
-            <nav id="mainnav-container" ng-show="mostrarMenu == 1">
+            <nav id="mainnav-container" class="onlyPrint" ng-show="mostrarMenu == 1">
                 <div id="mainnav">
                     <!--Menu-->
                     <!--================================-->
@@ -178,7 +178,7 @@
         </div>
         <!-- SCROLL PAGE BUTTON -->
         <!--===================================================-->
-        <button class="scroll-top btn">
+        <button class="scroll-top btn onlyPrint">
             <i class="pci-chevron chevron-up"></i>
         </button>
         <!--===================================================-->

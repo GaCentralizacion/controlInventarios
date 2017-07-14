@@ -25,6 +25,13 @@
 	padding: 5px;
 }
 
+.tbl-layout .valor_success{
+	font-size: 16px;
+	color: white !important;
+	background-color: #648e33;
+	padding: 5px;
+}
+
 .tbl-layout .accesorios{
 	width: 100%;
 }

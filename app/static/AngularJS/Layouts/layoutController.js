@@ -17,6 +17,9 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
     $scope.Accesorios    = [];
     $scope.LayoutFile    = [];
 
+    $scope.MaxAccesoriosRecibida = 20;
+    $scope.MaxAccesoriosDañada   = 10;
+
 
     $scope.init = function() {
         userFactory.ValidaSesion();
@@ -71,8 +74,9 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
             $scope.Accesorios = [];
             layoutRepository.getAccesorios( $scope.idModelo, $scope.idAnio ).then(function(result){
                 var Resultado = result.data[0];
+                console.log( Resultado );
                 Resultado.forEach( function( item, key ){
-                    $scope.Accesorios.push( {folio_herr: item.caa_idacce, descripcion: item.caa_descripacce} );
+                    $scope.Accesorios.push( {folio_herr: item.caa_idacce, descripcion: item.caa_descripacce, default:item.iad_cantdefault} );
                 });
 
                 $scope.json = {
@@ -211,13 +215,30 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
                 }
 
                 // Validamos que los accesorios sean correctos
-                var inicio    = 17;
-                var sumatoria = 0;
+                var inicio     = 17;
+                var sumatoria  = 0;
                 $scope.reclama = 0;
+                $scope.sumMax  = 0;
                 $scope.Accesorios.forEach( function( item, key ){
-                    $scope.Accesorios[ key ].recibida      = $scope.LayoutFile[ inicio ][2] == '' ? 0 : $scope.LayoutFile[ inicio ][2];
-                    $scope.Accesorios[ key ].daniada       = $scope.LayoutFile[ inicio ][3] == '' ? 0 : $scope.LayoutFile[ inicio ][3];
-                    $scope.Accesorios[ key ].observaciones = $scope.LayoutFile[ inicio ][4];
+                    // Validamos que las cantidades no sea cadenas de texto de lo contrario se convierte a 0
+                    $scope.Accesorios[ key ].recibida = $scope.LayoutFile[ inicio ][2] == '' ? 0 : $scope.LayoutFile[ inicio ][2];
+                    $scope.Accesorios[ key ].recibida = parseInt( $scope.Accesorios[ key ].recibida );
+                    $scope.Accesorios[ key ].recibida = isNaN( $scope.Accesorios[ key ].recibida ) ? 0 : $scope.Accesorios[ key ].recibida;
+                    
+                    $scope.Accesorios[ key ].daniada  = $scope.LayoutFile[ inicio ][3] == '' ? 0 : $scope.LayoutFile[ inicio ][3];
+                    $scope.Accesorios[ key ].daniada  = parseInt( $scope.Accesorios[ key ].daniada );
+                    $scope.Accesorios[ key ].daniada  = isNaN( $scope.Accesorios[ key ].daniada ) ? 0 : $scope.Accesorios[ key ].daniada;
+
+                    // Validamos que los montos no superen el maximo permitido
+                    if( $scope.Accesorios[ key ].recibida > $scope.MaxAccesoriosRecibida ){
+                        errLayout.push( 'Las cantidades recibidad superan al máximo permitido ('+ $scope.MaxAccesoriosRecibida +' Unidades) en el accesorio ' + $scope.Accesorios[ key ].caa_descripacce );
+                    }
+
+                    if( $scope.Accesorios[ key ].daniada > $scope.MaxAccesoriosDañada ){
+                        errLayout.push( 'Las cantidades dañadas superan al máximo permitido ('+ $scope.MaxAccesoriosDañada +' Unidades) en el accesorio ' + $scope.Accesorios[ key ].caa_descripacce );
+                    }
+
+                    $scope.Accesorios[ key ].observaciones = $scope.LayoutFile[ inicio ][4].substring(0, 250);
 
                     // Validamos el estatus de reclamacion
                     if( $scope.Accesorios[ key ].recibida != item.iad_cantdefault ){
@@ -296,11 +317,18 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
                 cargaInventarioRepository.getAccesoriosInventarioByVin( idEmpresa, idSucursal, VIN ).then(function(result){
                     $scope.VIN = result.data[0];
                     var errLayout = [];
-
+                    console.log( $scope.VIN )
                     if( $scope.VIN === undefined ){
                         $scope.Alert.color   = 'danger';
                         $scope.Alert.estatus = 'No existe VIN';
                         $scope.Alert.msg     = 'VIN '+ VIN +' no encontrado en base de datos, solicite verificar este campo.';
+                        $scope.Alert.acc     = true;
+                        $scope.Alert.btn     = 0; // Intentar con otro layout
+                    }
+                    else if( $scope.VIN.VEH_SITUACION != "ING" ){
+                        $scope.Alert.color   = 'danger';
+                        $scope.Alert.estatus = 'Unidad en situación no permitida';
+                        $scope.Alert.msg     = 'La unidad con el VIN proporcionado se encuentra en el siguiente situación: ' + $scope.VIN.VEH_SITUACION;
                         $scope.Alert.acc     = true;
                         $scope.Alert.btn     = 0; // Intentar con otro layout
                     }
@@ -333,7 +361,7 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
                 });
             }
 
-            $scope.observaciones = $scope.LayoutFile[ ( inicio + 2 ) ][2];
+            $scope.observaciones = $scope.LayoutFile[ ( inicio + 2 ) ][2].substring(0, 250);
         }, function(error){
             console.log("Error", error);
         });
@@ -352,10 +380,20 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
                        };
 
         cargaInventarioRepository.insertaEncabezadoInventario(Encabezado).then(function(result){
-            console.log(result);
             if (result.data[0].idEncabezadoInventario !== undefined){
             // if (result.data.length > 0){
                 var idEncabezado  =  result.data[0].idEncabezadoInventario;
+                $scope.LayoutFile[13][0] = result.data[0].Folio;
+                $scope.LayoutFile[13][1] = result.data[0].Fecha;
+                $scope.LayoutFile[13][5] = result.data[0].lblUsuario;
+
+                $(".guardado td").removeClass("valor");
+                $(".guardado td").addClass("valor_success");
+                $(".alert").hide();
+                $('html, body').animate({ scrollTop: 0 }, 'fast');
+                $("#guardar").hide();
+                $("#imprimir").show();
+
                 $scope.idsDetalle = [];
                 $scope.respuestas = 0;
                 $scope.Accesorios.forEach( function( item, key ){
@@ -405,7 +443,7 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
                 confirmButtonText: "OK",
             },
             function(){
-                location.reload();
+                // location.reload();
             });
         }
         else{

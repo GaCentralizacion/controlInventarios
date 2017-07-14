@@ -370,7 +370,14 @@ Layout.prototype.get_create = function(req, res, next) {
     ws.cell( row, 1, row, 2, true ).string( 'OBSERVACIONES GENERALES' ).style( sty_th );
     ws.cell( row, 3, row, 6, true ).string( '' ).style( sty_fill ).style( sty_bgcolor );
     // Se escribe el documento de excel
-    var nameLayout =  new Date().getTime() + '.xlsx'
+    var nameLayout = 'INV_' + json.catalogo + '_' + json.anio;
+
+    nameLayout.replace(/[^a-zA-Z 0-9.]+/g,'_');
+    nameLayout = nameLayout.replaceAll(" ", "_");
+    nameLayout = nameLayout.replaceAll("/", "_");
+    nameLayout += '.xlsx';
+
+    // var nameLayout =  new Date().getTime() + '.xlsx'
     wb.write( 'app/static/Layout/' + nameLayout, function( err, stats ){
         if (err) {
             console.error(err);
@@ -394,6 +401,11 @@ Layout.prototype.get_create = function(req, res, next) {
             });            
         }, 5000 );
     });
+};
+
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.replace(new RegExp(search, 'g'), replacement);
 };
 
 module.exports = Layout;
