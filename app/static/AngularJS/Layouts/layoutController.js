@@ -17,8 +17,9 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
     $scope.Accesorios    = [];
     $scope.LayoutFile    = [];
 
-    $scope.MaxAccesoriosRecibida = 20;
-    $scope.MaxAccesoriosDañada   = 10;
+    $scope.MaxAccesoriosRecibida = 0;
+    $scope.MaxAccesoriosDañada   = 0;
+    $scope.VEH_SITUACION         = '';
 
 
     $scope.init = function() {
@@ -26,6 +27,24 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
 
         $scope.getEmpresas( $scope.idUsuario );
         $scope.getAnioModelo();
+    }
+
+    $scope.initCarga = function(){
+        layoutRepository.parametros().then(function(result){
+            $scope.Parametros = result.data;
+            
+            $scope.MaxAccesoriosRecibida = $scope.getParametro('maximoRecibido');
+            $scope.MaxAccesoriosDañada   = $scope.getParametro('maximoDaniado');
+            $scope.VEH_SITUACION         = $scope.getParametro('situacionLayout');
+
+        }, function(error){
+            console.log("Error", error);
+        });
+    }
+
+    $scope.getParametro = function( parametro ){
+        $scope.arreglo = filterFilter( $scope.Parametros, {Parametro: parametro} );
+        return $scope.arreglo[0].Valor;
     }
 
     $scope.getEmpresas = function( idUsuario ){
@@ -325,7 +344,7 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
                         $scope.Alert.acc     = true;
                         $scope.Alert.btn     = 0; // Intentar con otro layout
                     }
-                    else if( $scope.VIN.VEH_SITUACION != "ING" ){
+                    else if( $scope.VIN.VEH_SITUACION != $scope.VEH_SITUACION ){
                         $scope.Alert.color   = 'danger';
                         $scope.Alert.estatus = 'Unidad en situación no permitida';
                         $scope.Alert.msg     = 'La unidad con el VIN proporcionado se encuentra en el siguiente situación: ' + $scope.VIN.VEH_SITUACION;
@@ -377,7 +396,7 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
                            idSucursal: $scope.Sucursal.suc_idsucursal,
                            ObservacionesGrales: $scope.observaciones.toUpperCase(),
                            reclama: $scope.reclama
-                       };
+                        };
 
         cargaInventarioRepository.insertaEncabezadoInventario(Encabezado).then(function(result){
             if (result.data[0].idEncabezadoInventario !== undefined){
@@ -385,7 +404,7 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
                 var idEncabezado  =  result.data[0].idEncabezadoInventario;
                 $scope.LayoutFile[13][0] = result.data[0].Folio;
                 $scope.LayoutFile[13][1] = result.data[0].Fecha;
-                $scope.LayoutFile[13][5] = result.data[0].lblUsuario;
+                $scope.LayoutFile[13][5] = $scope.userData.NombreUsuario;//result.data[0].lblUsuario;
 
                 $(".guardado td").removeClass("valor");
                 $(".guardado td").addClass("valor_success");
@@ -406,7 +425,6 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
 
                     cargaInventarioRepository.insertaDetalleInventario(Accesorio).then(function(result){
                         $scope.respuestas += 1;
-                        // if( result.data.length > 0 ){
                         if (result.data[0].idDetalleInventario !== undefined){
                             $scope.idsDetalle.push(result.data[0].idDetalleInventario);
                         }
@@ -444,6 +462,14 @@ registrationModule.controller('layoutController', function($scope, $rootScope, $
             },
             function(){
                 // location.reload();
+                // console.log("Aqui se actualiza a PRV");
+                // console.log('updateStatus', $scope.Empresa.emp_idempresa, $scope.Sucursal.suc_idsucursal,$scope.VIN.vin );
+                layoutRepository.updateStatus( $scope.Empresa.emp_idempresa, $scope.Sucursal.suc_idsucursal, $scope.VIN.vin ).then(function(result){
+                    console.log( result );
+                }, function(error){
+                    console.log("Error", error);
+                });
+                // updateStatus: function( idEmpresa, idSucursal, VIN );
             });
         }
         else{

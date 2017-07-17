@@ -1,5 +1,5 @@
 <link rel="stylesheet" type="text/css" href="css/layout/layout.css">
-<div class="panel panel-default" ng-show="userData.cargaLayout">
+<div class="panel panel-default" ng-show="userData.cargaLayout" ng-Init="initCarga();">
     <div class="panel-body">
       <div class="row onlyPrint">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -21,7 +21,7 @@
             <div class="col-sm-1 onlyPrint"></div>
             <div class="col-sm-10">
                 <table class="tbl-layout" id="layout">
-                    <head>
+                    <thead>
                         <tr>
                             <td colspan="6" class="titulo">Inventario de Accesorios</td>
                         </tr>
@@ -73,7 +73,7 @@
                         <tr>
                             <td colspan="6">&nbsp;</td>
                         </tr>
-                    </head>
+                    </thead>
                     <tbody>
                         <tr>
                             <td colspan="6">
@@ -129,11 +129,11 @@
         <div class="row onlyPrint" ng-show="LayoutFile.length != 0">
             <div class="col-sm-1"></div>
             <div class="col-sm-10" ng-show="Alert.btn == 0">
-                <button
+                <!-- <button
                     onClick="imprSelec('layout')"
                     class="btn btn-default pull-right" >
                     <i class="glyphicon glyphicon-repeat"></i> Imprimir
-                </button>
+                </button> -->
                 <button
                     ng-click="cancelarInventario();"
                     class="btn btn-default pull-right" >
@@ -152,32 +152,8 @@
                     class="btn btn-default pull-right" >
                 	<i class="glyphicon glyphicon-repeat"></i> Intentar con un nuevo Layout
                 </button>
-
-                
-
-                <!-- <a href="javascript:imprSelec('muestra')">Imprimir Tabla</a> -->
-
                 <script type="text/javascript">
                 function imprSelec(muestra){
-                    // var ficha=document.getElementById(muestra);
-                    // var ventimp=window.open(' ','popimpr');
-                    // ventimp.document.write(ficha.innerHTML);
-                    // ventimp.document.close();
-                    // ventimp.print();
-                    // ventimp.close();
-
-                    // var ficha = document.getElementById(muestra);
-                    //   var ventimp = window.open(' ', '_blank');
-                    //   ventimp.document.write( ficha.innerHTML );
-                    //   ventimp.document.close();
-                    //   var css = ventimp.document.createElement("link");
-                    // css.setAttribute("href", "tuhojadeeestilos.css");
-                    // css.setAttribute("rel", "stylesheet");
-                    // css.setAttribute("type", "text/css");
-                    // ventimp.document.head.appendChild(css);
-                    //   ventimp.print( );
-                    //   ventimp.close();
-
                     window.print();
                 }
                 </script>

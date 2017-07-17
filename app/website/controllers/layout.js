@@ -55,6 +55,35 @@ Layout.prototype.get_anioModelo = function(req, res, next) {
     });
 }
 
+Layout.prototype.get_updateStatus = function(req, res, next) {
+    var self = this;
+
+    var param = [{name: 'idEmpresa', value: req.query.idEmpresa, type: self.model.types.INT },
+                     {name: 'idSucursal', value: req.query.idSucursal, type: self.model.types.INT },
+                     {name: 'VIN', value: req.query.VIN, type: self.model.types.STRING }
+                    ];
+
+    self.model.query('UPD_STATUS_UNIDAD_SP', param, function(error, result) {
+        self.view.expositor(res, {
+            error: error,
+            result: result
+        });
+    });
+}
+
+Layout.prototype.get_parametros = function(req, res, next) {
+    var self = this;
+
+    var param = [];
+
+    self.model.query('SEL_PARAMETROS_SP', param, function(error, result) {
+        self.view.expositor(res, {
+            error: error,
+            result: result
+        });
+    });
+}
+
 Layout.prototype.get_accesorios = function(req, res, next) {
     var self = this;
 

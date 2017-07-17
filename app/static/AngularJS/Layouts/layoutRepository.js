@@ -88,6 +88,29 @@ registrationModule.factory('layoutRepository', function($http) {
                     'Content-Type': 'application/json'
                 }
             });
+        },
+        updateStatus: function( idEmpresa, idSucursal, VIN ) {
+            return $http({
+                url: layoutURL + 'updateStatus/',
+                method: "GET",
+                params: {
+                    idEmpresa: idEmpresa,
+                    idSucursal: idSucursal,
+                    VIN: VIN
+                },
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+        },
+        parametros: function() {
+            return $http({
+                url: layoutURL + 'parametros/',
+                method: "GET",
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
         }
     };
 });
