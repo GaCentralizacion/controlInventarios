@@ -93,7 +93,7 @@
                                         <input type="text" ng-pattern="/^[0-9]*$/" min="0" class="form-control noBorder" ng-model="acce.cantDaniados" ng-change="cambiaCant(key,false)">
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control noBorder" ng-model="acce.observaciones">
+                                        <input type="text" class="form-control noBorder" ng-model="acce.observaciones" maxlength="250">
                                     </td>
                                     <!-- <td><button class="btn btn-danger glyphicon glyphicon-trash" ng-click=""></button></td> -->
                                 </tr>
@@ -104,7 +104,7 @@
                   <div class="row" ng-show="MostrarAccesorios">
                       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-right">
                           <label class="font-noraml">OBSERVACIONES</LABEL>
-                          <input type="text" name="obsGrales" class="form-control" ng-model="Inv.Observaciones">
+                          <input type="text" name="obsGrales" class="form-control" ng-model="Inv.Observaciones" maxlength="250">
                       </div>
                   </div>
               </div>
