@@ -201,96 +201,95 @@ registrationModule.controller('cargaInventarioController', function($scope, $roo
                 // swal('Carga Inventarios', 'Ocurrio los siguientes puntos: ' + );
                 $scope.puedeGuardar = true;
             }
+            else{
+                if (verificaCant) {
+                    var Encabezado = {
+                        vin: $scope.Inv.vin,
+                        idUsr: $scope.userData.idUsr,
+                        iae_idinventacce: $scope.Inv.iae_idinventacce,
+                        idDivision: $scope.idDivision,
+                        idEmpresa: $scope.idEmpresa,
+                        idSucursal: $scope.idSucursal,
+                        ObservacionesGrales: obsGrales,
+                        reclama: invReclama
+                    };
 
-            // return false;
+                    cargaInventarioRepository.insertaEncabezadoInventario(Encabezado).then(function(result) {
+                        if (result.data[0].idEncabezadoInventario !== undefined) {
+                            console.log( result.data );
+                            $scope.InventarioGuardado = result.data[0];
+                            $scope.Inv.NoInventario = $scope.InventarioGuardado.Folio;
+                            var idEncabezado = result.data[0].idEncabezadoInventario;
 
-            if (verificaCant) {
-                var Encabezado = {
-                    vin: $scope.Inv.vin,
-                    idUsr: $scope.userData.idUsr,
-                    iae_idinventacce: $scope.Inv.iae_idinventacce,
-                    idDivision: $scope.idDivision,
-                    idEmpresa: $scope.idEmpresa,
-                    idSucursal: $scope.idSucursal,
-                    ObservacionesGrales: obsGrales,
-                    reclama: invReclama
-                };
+                            $scope.Inv.detalle.forEach(function(acce, key) {
+                                var obsAcce = acce.observaciones == null || acce.observaciones == undefined ? '' : acce.observaciones.toUpperCase();
+                                var estadoAcce = 1;
 
-                cargaInventarioRepository.insertaEncabezadoInventario(Encabezado).then(function(result) {
-                    if (result.data[0].idEncabezadoInventario !== undefined) {
-                        console.log( result.data );
-                        $scope.InventarioGuardado = result.data[0];
-                        $scope.Inv.NoInventario = $scope.InventarioGuardado.Folio;
-                        var idEncabezado = result.data[0].idEncabezadoInventario;
-
-                        $scope.Inv.detalle.forEach(function(acce, key) {
-                            var obsAcce = acce.observaciones == null || acce.observaciones == undefined ? '' : acce.observaciones.toUpperCase();
-                            var estadoAcce = 1;
-
-                            if (acce.cantDaniados == 0) {
-                                //1 ok, 2 faltante, 4 excedente
-                                if (acce.cantRecibida == acce.iad_cantdefault) {
-                                    estadoAcce = 1;
-                                } else if (acce.cantRecibida < acce.iad_cantdefault) {
-                                    estadoAcce = 2;
+                                if (acce.cantDaniados == 0) {
+                                    //1 ok, 2 faltante, 4 excedente
+                                    if (acce.cantRecibida == acce.iad_cantdefault) {
+                                        estadoAcce = 1;
+                                    } else if (acce.cantRecibida < acce.iad_cantdefault) {
+                                        estadoAcce = 2;
+                                    } else {
+                                        estadoAcce = 4;
+                                    }
                                 } else {
-                                    estadoAcce = 4;
-                                }
-                            } else {
-                                //3 dañada, 6 dañada faltante, 5 dañada excedente
-                                if (acce.cantRecibida == acce.iad_cantdefault) {
-                                    estadoAcce = 3;
-                                } else if (acce.cantRecibida < acce.iad_cantdefault) {
-                                    estadoAcce = 6;
-                                } else {
-                                    estadoAcce = 5;
-                                }
-                            }
-
-                            var Accesorio = {
-                                idEncabezado: idEncabezado,
-                                caa_idacce: acce.caa_idacce[0],
-                                recibidos: acce.cantRecibida,
-                                daniados: acce.cantDaniados,
-                                observaciones: obsAcce,
-                                idEstadoAccesorio: estadoAcce
-                            };
-
-                            cargaInventarioRepository.insertaDetalleInventario(Accesorio).then(function(result) {
-                                $scope.respuestas += 1;
-
-                                if (result.data[0].idDetalleInventario !== undefined) {
-                                    $scope.idsDetalle.push(result.data[0].idDetalleInventario);
+                                    //3 dañada, 6 dañada faltante, 5 dañada excedente
+                                    if (acce.cantRecibida == acce.iad_cantdefault) {
+                                        estadoAcce = 3;
+                                    } else if (acce.cantRecibida < acce.iad_cantdefault) {
+                                        estadoAcce = 6;
+                                    } else {
+                                        estadoAcce = 5;
+                                    }
                                 }
 
-                                if ($scope.respuestas == ($scope.Inv.detalle.length)) {
-                                    $scope.validaAccesoriosCompletos(idEncabezado);
-                                }
-                            }, function(error) {
-                                console.log("Error", error);
-                                $scope.respuestas += 1;
-                                alertFactory.warning('No se pudo guardar el accesorio: ' + acce.caa_descripacce + '.');
+                                var Accesorio = {
+                                    idEncabezado: idEncabezado,
+                                    caa_idacce: acce.caa_idacce[0],
+                                    recibidos: acce.cantRecibida,
+                                    daniados: acce.cantDaniados,
+                                    observaciones: obsAcce,
+                                    idEstadoAccesorio: estadoAcce
+                                };
 
-                                if ($scope.respuestas == ($scope.Inv.detalle.length)) {
-                                    $scope.validaAccesoriosCompletos(idEncabezado);
-                                }
+                                cargaInventarioRepository.insertaDetalleInventario(Accesorio).then(function(result) {
+                                    $scope.respuestas += 1;
 
+                                    if (result.data[0].idDetalleInventario !== undefined) {
+                                        $scope.idsDetalle.push(result.data[0].idDetalleInventario);
+                                    }
+
+                                    if ($scope.respuestas == ($scope.Inv.detalle.length)) {
+                                        $scope.validaAccesoriosCompletos(idEncabezado);
+                                    }
+                                }, function(error) {
+                                    console.log("Error", error);
+                                    $scope.respuestas += 1;
+                                    alertFactory.warning('No se pudo guardar el accesorio: ' + acce.caa_descripacce + '.');
+
+                                    if ($scope.respuestas == ($scope.Inv.detalle.length)) {
+                                        $scope.validaAccesoriosCompletos(idEncabezado);
+                                    }
+
+                                });
                             });
-                        });
 
-                    } else {
-                        swal('Carga Inventarios', 'No se pudo guardar el inventario.');
+                        } else {
+                            swal('Carga Inventarios', 'No se pudo guardar el inventario.');
+                            $scope.puedeGuardar = true;
+                        }
+                    }, function(error) {
+                        swal('Carga Inventarios', 'Ocurrio un error al guardar inventario.');
+                        console.log("Error", error);
                         $scope.puedeGuardar = true;
-                    }
-                }, function(error) {
-                    swal('Carga Inventarios', 'Ocurrio un error al guardar inventario.');
-                    console.log("Error", error);
-                    $scope.puedeGuardar = true;
-                });
+                    });
 
-            } else {
-                swal('Carga Inventarios', 'No puede guardar el inventario, la cantidad de accesorios dañados no puede ser mayor a los accesorios recibidos.');
-                $scope.puedeGuardar = true;
+                } else {
+                    swal('Carga Inventarios', 'No puede guardar el inventario, la cantidad de accesorios dañados no puede ser mayor a los accesorios recibidos.');
+                    $scope.puedeGuardar = true;
+                }
             }
         } else {
             swal('Carga Inventarios', 'No puede guardar el inventario, el total de los accesorios recibidos debe ser mayor a 0.');
