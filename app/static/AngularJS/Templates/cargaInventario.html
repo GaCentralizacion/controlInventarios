@@ -1,130 +1,267 @@
+<link rel="stylesheet" type="text/css" href="css/layout/layout.css">
 <div ng-init="init()">
-  <div ng-show="userData.cargaInventario">
-      <div class="panel panel-default">
-          <!-- <div class="panel-heading">
-              algo
-          </div> -->
-        	<div class="panel-body">
-              <div class="row">
-                  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                      <h3>Carga inventario</h3>
-                      <br>
-                  </div>
-              </div>
-              <div class="row">
-                    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
-                      <label class="font-noraml">EMPRESA</label>
-                      <select class="form-control m-b" id="empresa" ng-model="indice" ng-change="EmpresaSeleccionada(indice);CambiaBusqueda();" ng-options="key as emp.emp_nombre for (key, emp) in Empresas">
-                          <option value=''>- Seleccione Empresa -</option>
-                      </select>
+    <div ng-show="userData.cargaInventario">
+        <div class="panel panel-default">
+            <!-- <div class="panel-heading">
+                algo
+                </div> -->
+            <div class="panel-body">
+                <div class="row onlyPrint">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <h3>Carga inventario</h3>
+                        <br>
                     </div>
-
-                    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
-                      <label class="font-noraml">SUCURSAL</label>
-                      <select class="form-control m-b" id="sucursal" ng-model="idSucursal" ng-change="CambiaBusqueda();" ng-options="suc.suc_idsucursal as suc.suc_nombre for suc in Empresas[indice].Sucursales">
-                          <option value='' >- Seleccione Sucursal -</option>
-                      </select>
-                    </div>
-
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-              				<label class="font-noraml">VIN</LABEL>
-              				<input type="text" name="vin" class="form-control" ng-change="CambiaBusqueda();" ng-model="vin">
-              			</div>
                 </div>
-          </div>
-          <div class="panel-footer">
-            <div class="row">
-        			<!-- <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-        				<button class="btn btn-success pull-left" ng-click="">Ver Historial</button>
-        			</div> -->
-              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <button class="btn btn-primary pull-right" ng-click="buscar()">
-                  <i class="glyphicon glyphicon-zoom-in"></i> Buscar Accesorios
-                </button>
-              </div>
-            </div>
-        	</div>
-      </div>
-      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="MostrarInfo">
-          <div class="panel panel-default">
-              <div class="panel-body">
-                  <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 labelContainer">
-                      <strong class="font-noraml">VIN:  </strong><span>{{Inv.vin}}</span>
-                      <!-- <input type="text" name="vinUnidad" class="form-control" ng-model="Inv.vin" readonly> -->
-                    </div>
-                    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 labelContainer">
-                      <strong class="font-noraml">NÚM. INVENTARIO:  </strong><span>{{Inv.NoInventario + 1}}</span>
-                      <!-- <input type="text" name="numInventario"  class="form-control" value="{{Inv.NoInventario + 1}}" readonly> -->
-                    </div>
-                    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 labelContainer">
-                      <strong class="font-noraml">CATÁLOGO:  </strong><span>{{Inv.catalogo}}</span>
-                      <!-- <input type="text" name="catalogo" class="form-control" ng-model="Inv.catalogo" readonly> -->
-                    </div>
-                    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 labelContainer">
-                      <strong class="font-noraml">DESCRIPCIÓN:  </strong>{{Inv.modelo}}<span></span>
-                      <!-- <input type="text" name="descripcion" class="form-control" ng-model="Inv.modelo" readonly> -->
-                    </div>
-                    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 labelContainer">
-                      <strong class="font-noraml">AÑO:  </strong><span>{{Inv.anioModelo}}</span>
-                      <!-- <input type="text" name="anio" class="form-control" ng-model="Inv.anioModelo" readonly> -->
-                    </div>
-                  </div>
-                  </br>
-                  <div class="row" ng-show="MostrarAccesorios">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-hover ">
+                <div class="row tblPrint" style="display: none;">
+                    <div class="col-sm-1 onlyPrint"></div>
+                    <div class="col-sm-10">
+                        <table class="tbl-layout" id="layout">
                             <thead>
                                 <tr>
-                                    <th>Descripción</th>
-                                    <th>Cantidad Recibida</th>
-                                    <th>Cantidad Dañados</th>
-                                    <th>Observaciones</th>
-                                    <!-- <th>Eliminar</th> -->
+                                    <td colspan="6" class="titulo">Inventario de Accesorios</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" class="etiqueta">EMPRESA</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td colspan="2" class="etiqueta">SUCURSAL</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" class="valor">{{ emp_nombre }}</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td colspan="2" class="valor">{{ suc_nombre }}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td class="etiqueta">VIN</td>
+                                    <td colspan="2" class="etiqueta">CATÁLOGO</td>
+                                    <td colspan="2" class="etiqueta">DESCRIPCIÓN</td>
+                                    <td class="etiqueta">AÑO MODELO</td>
+                                </tr>
+                                <tr>
+                                    <td class="valor">{{ Inv.vin }}</td>
+                                    <td colspan="2" class="valor">{{ Inv.catalogo }}</td>
+                                    <td colspan="2" class="valor">{{ Inv.modelo }}</td>
+                                    <td class="valor">{{ Inv.anioModelo }}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td class="etiqueta">FOLIO DE REVISIÓN</td>
+                                    <td colspan="2" class="etiqueta">FECHA / HORA DE LEVANTAMIENTO</td>
+                                    <td colspan="2" class="etiqueta">&nbsp;</td>
+                                    <td class="etiqueta">USUARIO</td>
+                                </tr>
+                                <tr class="guardado">
+                                    <td class="valor">{{Inv.NoInventario}}</td>
+                                    <td colspan="2" class="valor">{{ InventarioGuardado.Fecha }}</td>
+                                    <td colspan="2" class="valor">&nbsp;</td>
+                                    <td class="valor">{{ userData.NombreUsuario }}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6">&nbsp;</td>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="(key, acce) in Inv.detalle">
-                                    <td>{{acce.caa_descripacce}}</td>
-                                    <td>
-                                        <input type="text" ng-pattern="/^[0-9]*$/" min="0" class="form-control noBorder" ng-model="acce.cantRecibida" ng-change="cambiaCant(key,true)">
+                                <tr>
+                                    <td colspan="6">
+                                        <table class="accesorios">
+                                            <tr>
+                                                <td class="th">No</td>
+                                                <td class="th">DESCRIPCIÓN HERRAMIENTA</td>
+                                                <td class="th">CANTIDAD RECIBIDA</td>
+                                                <td class="th">CANTIDAD DAÑADA</td>
+                                                <td colspan="2" class="th">OBSERVACIONES</td>
+                                            </tr>
+                                            <tr ng-repeat="(key, acce) in Inv.detalle">
+                                                <td class="tval">{{ key + 1 }}</td>
+                                                <td class="tval">{{ acce.caa_descripacce }}</td>
+                                                <td class="tval">{{ acce.cantRecibida }}</td>
+                                                <td class="tval">{{ acce.cantDaniados }}</td>
+                                                <td colspan="2" class="tval" style="text-transform: uppercase;">{{ acce.observaciones }}</td>
+                                            </tr>
+                                        </table>
                                     </td>
-                                    <td>
-                                        <input type="text" ng-pattern="/^[0-9]*$/" min="0" class="form-control noBorder" ng-model="acce.cantDaniados" ng-change="cambiaCant(key,false)">
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control noBorder" ng-model="acce.observaciones" maxlength="250">
-                                    </td>
-                                    <!-- <td><button class="btn btn-danger glyphicon glyphicon-trash" ng-click=""></button></td> -->
                                 </tr>
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="6">
+                                        <table class="observaciones">
+                                            <tr>
+                                                <td class="etiqueta" width="25%" valign="top">OBSERVACIONES GENERALES</td>
+                                                <td class="valor" style="text-transform: uppercase;">{{ Inv.Observaciones }}</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
-                  </div>
-                  <div class="row" ng-show="MostrarAccesorios">
-                      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-right">
-                          <label class="font-noraml">OBSERVACIONES</LABEL>
-                          <input type="text" name="obsGrales" class="form-control" ng-model="Inv.Observaciones" maxlength="250">
-                      </div>
-                  </div>
-              </div>
-              <div class="panel-footer">
-                <div class="row">
-                  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <button class="btn btn-success pull-right" ng-click="guardarInventario()" ng-disabled="!puedeGuardar"> <i class="glyphicon glyphicon-save"></i> Cargar Inventario</button>
-                  </div>
                 </div>
-              </div>
-          </div>
-      </div>
-  </div>
-  <div ng-hide="userData.cargaInventario">
-      <div class="row">
-          <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12 NotAllowed">
-              <i class="glyphicon glyphicon-exclamation-sign"></i>
-              <p>No tiene permiso para ingresar a este módulo.</p>
-              Click <a href="/" >aquí</a> para regresar
-          </div>
-      </div>
-  </div>
+                <div class="row tblPrint" style="display: none;">
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-10 onlyPrint" id="imprimir">
+                    <br><br>
+                        <button
+                            style="margin-left: 10px"
+                            onClick="window.print();"
+                            class="btn btn-primary pull-right" >
+                            <i class="glyphicon glyphicon-print"></i> Imprimir Inventario
+                        </button>
+                        <button
+                            onClick="location.reload();"
+                            class="btn btn-default pull-right" >
+                            <i class="glyphicon glyphicon-repeat"></i> Nuevo inventario
+                        </button>
+                    </div>
+                </div>
+                <div class="row onlyPrint tblNoPrint">
+                    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                        <label class="font-noraml">EMPRESA</label>
+                        <select class="form-control m-b" id="empresa" ng-model="indice" ng-change="EmpresaSeleccionada(indice);CambiaBusqueda();" ng-options="key as emp.emp_nombre for (key, emp) in Empresas">
+                            <option value=''>- Seleccione Empresa -</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                        <label class="font-noraml">SUCURSAL</label>
+                        <select class="form-control m-b" id="sucursal" ng-model="idSucursal" ng-change="CambiaBusqueda(); seleccionaSucursal();" ng-options="suc.suc_idsucursal as suc.suc_nombre for suc in Empresas[indice].Sucursales">
+                            <option value='' >- Seleccione Sucursal -</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <label class="font-noraml">VIN</LABEL>
+                        <input type="text" name="vin" class="form-control" ng-change="CambiaBusqueda();" ng-model="vin">
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer onlyPrint tblNoPrint">
+                <div class="row">
+                    <!-- <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <button class="btn btn-success pull-left" ng-click="">Ver Historial</button>
+                        </div> -->
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <button class="btn btn-primary pull-right" ng-click="buscar()">
+                        <i class="glyphicon glyphicon-zoom-in"></i> Buscar Accesorios
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 onlyPrint tblNoPrint" ng-show="MostrarInfo">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 labelContainer">
+                            <strong class="font-noraml">VIN:  </strong><span>{{Inv.vin}}</span>
+                            <!-- <input type="text" name="vinUnidad" class="form-control" ng-model="Inv.vin" readonly> -->
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 labelContainer">
+                            <strong class="font-noraml">NÚM. INVENTARIO:  </strong><span>{{Inv.NoInventario}}</span>
+                            <!-- <input type="text" name="numInventario"  class="form-control" value="{{Inv.NoInventario + 1}}" readonly> -->
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 labelContainer">
+                            <strong class="font-noraml">CATÁLOGO:  </strong><span>{{Inv.catalogo}}</span>
+                            <!-- <input type="text" name="catalogo" class="form-control" ng-model="Inv.catalogo" readonly> -->
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 labelContainer">
+                            <strong class="font-noraml">DESCRIPCIÓN:  </strong>{{Inv.modelo}}<span></span>
+                            <!-- <input type="text" name="descripcion" class="form-control" ng-model="Inv.modelo" readonly> -->
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 labelContainer">
+                            <strong class="font-noraml">AÑO:  </strong><span>{{Inv.anioModelo}}</span>
+                            <!-- <input type="text" name="anio" class="form-control" ng-model="Inv.anioModelo" readonly> -->
+                        </div>
+                    </div>
+                    </br>
+                    <div class="row" ng-show="MostrarAccesorios">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover ">
+                                <thead>
+                                    <tr>
+                                        <th>Descripción</th>
+                                        <th>Cantidad Recibida</th>
+                                        <th>Cantidad Dañados</th>
+                                        <th>Observaciones</th>
+                                        <!-- <th>Eliminar</th> -->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="(key, acce) in Inv.detalle">
+                                        <td>{{acce.caa_descripacce}}</td>
+                                        <td>
+                                            <input type="text" ng-pattern="/^[0-9]*$/" min="0" class="form-control noBorder" ng-model="acce.cantRecibida" ng-change="cambiaCant(key,true)">
+                                        </td>
+                                        <td>
+                                            <input type="text" ng-pattern="/^[0-9]*$/" min="0" class="form-control noBorder" ng-model="acce.cantDaniados" ng-change="cambiaCant(key,false)">
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control noBorder" ng-model="acce.observaciones" maxlength="250">
+                                        </td>
+                                        <!-- <td><button class="btn btn-danger glyphicon glyphicon-trash" ng-click=""></button></td> -->
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row" ng-show="MostrarAccesorios">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-right">
+                            <label class="font-noraml">OBSERVACIONES</LABEL>
+                            <input type="text" name="obsGrales" class="form-control" ng-model="Inv.Observaciones" maxlength="250">
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <button class="btn btn-success pull-right" ng-click="guardarInventario()" ng-disabled="!puedeGuardar"> <i class="glyphicon glyphicon-save"></i> Cargar Inventario</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-hide="userData.cargaInventario" class="onlyPrint">
+        <div class="row">
+            <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12 NotAllowed">
+                <i class="glyphicon glyphicon-exclamation-sign"></i>
+                <p>No tiene permiso para ingresar a este módulo.</p>
+                Click <a href="/" >aquí</a> para regresar
+            </div>
+        </div>
+    </div>
 </div>
+
+<style type="text/css" media="print">
+    .onlyPrint{
+        display:none !important;
+    }
+
+    .valor, .tval{
+        color: #000 !important;
+    }
+
+    .tbl-layout {
+        margin-top: 0 !important;
+    }
+
+    #content-container {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+    .tbl-layout .valor, .tbl-layout .valor_success{
+        color: black !important;
+    }
+
+    .panel{
+        margin-bottom: 0 !important;
+    }
+</style>
